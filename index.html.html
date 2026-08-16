@@ -57,7 +57,7 @@ var PDPA_APP = (() => {
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // --------------------------------------------------------
-  // 2. COMPONENT ĐĂNG NHẬP / ĐĂNG KÝ
+  // 2. COMPONENT ĐĂNG NHẬP / ĐĂNG KÝ (ENGLISH)
   // --------------------------------------------------------
   function LoginPanel() {
     const [email, setEmail] = useState('');
@@ -67,19 +67,19 @@ var PDPA_APP = (() => {
 
     async function handleLogin() {
       setLoading(true); 
-      setMessage('Đang xử lý...');
+      setMessage('Processing...');
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) setMessage('Lỗi: ' + error.message);
-      else setMessage('Đăng nhập thành công!');
+      if (error) setMessage('Error: ' + error.message);
+      else setMessage('Login successful!');
       setLoading(false);
     }
 
     async function handleSignUp() {
       setLoading(true); 
-      setMessage('Đang xử lý...');
+      setMessage('Processing...');
       const { error } = await supabaseClient.auth.signUp({ email, password });
-      if (error) setMessage('Lỗi: ' + error.message);
-      else setMessage('Đăng ký thành công! Vui lòng kiểm tra email (nếu yêu cầu) hoặc đăng nhập ngay.');
+      if (error) setMessage('Error: ' + error.message);
+      else setMessage('Sign up successful! Please check your email (if required) or log in now.');
       setLoading(false);
     }
 
@@ -89,15 +89,15 @@ var PDPA_APP = (() => {
       React.createElement(
         'div',
         { style: { padding: '40px 40px', background: '#fff', border: '1px solid #DDE2E5', borderRadius: 12, width: 340, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' } },
-        React.createElement('h2', { style: { marginTop: 0, color: '#1C2B33', fontSize: 22, fontWeight: 800, letterSpacing: -0.5 } }, 'Pipe Design Assistant'),
-        React.createElement('p', { style: { color: '#425563', fontSize: 13, marginBottom: 24, lineHeight: 1.5 } }, 'Welcome to NEXT GEN Prototype. Vui lòng đăng nhập để tiếp tục.'),
+        React.createElement('h2', { style: { marginTop: 0, color: '#1C2B33', fontSize: 22, fontWeight: 800, letterSpacing: -0.5 } }, 'Welcome Pipe Design Project Assistant'),
+        React.createElement('p', { style: { color: '#425563', fontSize: 13, marginBottom: 24, lineHeight: 1.5 } }, 'Welcome to NEXT GEN Prototype. Please log in to continue.'),
         React.createElement('input', {
-          type: 'email', placeholder: 'Email đăng nhập', value: email,
+          type: 'email', placeholder: 'Email', value: email,
           onChange: (e) => setEmail(e.target.value),
           style: { width: '100%', padding: '12px 14px', marginBottom: 14, boxSizing: 'border-box', border: '1px solid #DDE2E5', borderRadius: 6, outline: 'none', fontSize: 14 }
         }),
         React.createElement('input', {
-          type: 'password', placeholder: 'Mật khẩu', value: password,
+          type: 'password', placeholder: 'Password', value: password,
           onChange: (e) => setPassword(e.target.value),
           style: { width: '100%', padding: '12px 14px', marginBottom: 20, boxSizing: 'border-box', border: '1px solid #DDE2E5', borderRadius: 6, outline: 'none', fontSize: 14 }
         }),
@@ -107,14 +107,14 @@ var PDPA_APP = (() => {
           React.createElement('button', { 
             onClick: handleLogin, disabled: loading,
             style: { flex: 1, padding: '12px', background: '#1C2B33', color: '#fff', border: 'none', borderRadius: 6, cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 600, fontSize: 13, transition: 'all 0.2s' } 
-          }, 'Đăng nhập'),
+          }, 'Log in'),
           React.createElement('button', { 
             onClick: handleSignUp, disabled: loading,
             style: { flex: 1, padding: '12px', background: '#fff', color: '#1C2B33', border: '1px solid #DDE2E5', borderRadius: 6, cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 600, fontSize: 13, transition: 'all 0.2s' } 
-          }, 'Đăng ký')
+          }, 'Sign up')
         ),
         message && React.createElement('div', { 
-            style: { marginTop: 20, fontSize: 13, padding: 10, borderRadius: 6, background: message.includes('thành công') ? '#E7F4EC' : '#FBE9E8', color: message.includes('thành công') ? '#2E7D4F' : '#B0332B', fontWeight: 600, textAlign: 'center' } 
+            style: { marginTop: 20, fontSize: 13, padding: 10, borderRadius: 6, background: message.includes('successful') ? '#E7F4EC' : '#FBE9E8', color: message.includes('successful') ? '#2E7D4F' : '#B0332B', fontWeight: 600, textAlign: 'center' } 
         }, message)
       )
     );
@@ -946,7 +946,7 @@ var PDPA_APP = (() => {
     }, [selectedSg]);
     
     // Kiểm tra chặn nếu chưa đăng nhập
-    if (!authChecked) return React.createElement('div', { style: { padding: 40, fontFamily: 'sans-serif', color: COLORS.steel } }, 'Đang kiểm tra thông tin đăng nhập...');
+    if (!authChecked) return React.createElement('div', { style: { padding: 40, fontFamily: 'sans-serif', color: COLORS.steel } }, 'Checking authentication status...');
     if (!session) return React.createElement(LoginPanel, null);
 
     const standardName = refPack.standards.find((s) => s.standardId === project.standardId)?.displayName;
@@ -1018,7 +1018,7 @@ var PDPA_APP = (() => {
         style: { background: "transparent", border: "none", color: "#fff", fontSize: 18, fontWeight: 700, outline: "none", padding: "2px 0", width: 260 }
       }
     )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, 
-        /* @__PURE__ */ React.createElement("span", { onClick: () => supabaseClient.auth.signOut(), style: { fontSize: 11, opacity: 0.7, cursor: 'pointer', marginRight: 15, textDecoration: 'underline' } }, "Đăng xuất"), 
+        /* @__PURE__ */ React.createElement("span", { onClick: () => supabaseClient.auth.signOut(), style: { fontSize: 11, opacity: 0.7, cursor: 'pointer', marginRight: 15, textDecoration: 'underline' } }, "Log out"), 
         /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, opacity: 0.7 } }, "Standard (whole Project)"), /* @__PURE__ */ React.createElement(
       Select,
       {
