@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pipe Design Project Assistant — NEXT GEN Prototype</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #F6F5F1; }
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div style="font-family: ui-sans-serif, system-ui, sans-serif; padding: 40px; color: #425563;">
+    Loading PipeDesignAssistant NEXT GEN…
+  </div>
+</div>
+<script>
+var PDPA_APP = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // app.build.jsx
+  var app_build_exports = {};
+  __export(app_build_exports, {
+    default: () => PipeDesignNextGen
+  });
+  var { useState, useReducer, useMemo, useRef } = React;
+  var RAW_DB = { "pipeSizes": [{ "material": "PPR", "dn": "DN15", "od": 20, "id": 14.4 }, { "material": "PPR", "dn": "DN20", "od": 25, "id": 18 }, { "material": "PPR", "dn": "DN25", "od": 32, "id": 23.2 }, { "material": "PPR", "dn": "DN32", "od": 40, "id": 29 }, { "material": "PPR", "dn": "DN40", "od": 50, "id": 36.2 }, { "material": "PPR", "dn": "DN50", "od": 63, "id": 45.8 }, { "material": "PPR", "dn": "DN65", "od": 75, "id": 54.4 }, { "material": "PPR", "dn": "DN80", "od": 90, "id": 65.4 }, { "material": "PPR", "dn": "DN100", "od": 110, "id": 79.8 }, { "material": "PPR", "dn": "DN125", "od": 125, "id": 90.8 }, { "material": "PPR", "dn": "DN150", "od": 160, "id": 116.2 }, { "material": "PPR", "dn": "DN200", "od": 200, "id": 145.2 }, { "material": "HDPE", "dn": "DN20", "od": 20, "id": 16.4 }, { "material": "HDPE", "dn": "DN25", "od": 25, "id": 20.5 }, { "material": "HDPE", "dn": "DN32", "od": 32, "id": 26.2 }, { "material": "HDPE", "dn": "DN40", "od": 40, "id": 32.7 }, { "material": "HDPE", "dn": "DN50", "od": 50, "id": 40.9 }, { "material": "HDPE", "dn": "DN65", "od": 63, "id": 51.5 }, { "material": "HDPE", "dn": "DN80", "od": 90, "id": 73.6 }, { "material": "HDPE", "dn": "DN100", "od": 110, "id": 90 }, { "material": "HDPE", "dn": "DN125", "od": 140, "id": 114.5 }, { "material": "HDPE", "dn": "DN150", "od": 160, "id": 130.9 }, { "material": "HDPE", "dn": "DN200", "od": 200, "id": 163.6 }, { "material": "Copper", "dn": "DN15", "od": 15.88, "id": 13.84 }, { "material": "Copper", "dn": "DN20", "od": 22.23, "id": 19.95 }, { "material": "Copper", "dn": "DN25", "od": 28.58, "id": 26.04 }, { "material": "Copper", "dn": "DN32", "od": 34.93, "id": 32.13 }, { "material": "Copper", "dn": "DN40", "od": 41.28, "id": 38.24 }, { "material": "Copper", "dn": "DN50", "od": 53.98, "id": 50.42 }, { "material": "Copper", "dn": "DN65", "od": 66.68, "id": 62.62 }, { "material": "Copper", "dn": "DN80", "od": 79.38, "id": 74.8 }, { "material": "Copper", "dn": "DN100", "od": 104.78, "id": 99.2 }, { "material": "Copper", "dn": "DN125", "od": 130.18, "id": 123.82 }, { "material": "Copper", "dn": "DN150", "od": 155.58, "id": 148.46 }, { "material": "Inox", "dn": "DN15", "od": 21.3, "id": 17.08 }, { "material": "Inox", "dn": "DN20", "od": 26.7, "id": 22.48 }, { "material": "Inox", "dn": "DN25", "od": 33.4, "id": 27.86 }, { "material": "Inox", "dn": "DN32", "od": 42.2, "id": 36.66 }, { "material": "Inox", "dn": "DN40", "od": 48.3, "id": 42.76 }, { "material": "Inox", "dn": "DN50", "od": 60.3, "id": 54.76 }, { "material": "Inox", "dn": "DN65", "od": 73, "id": 66.9 }, { "material": "Inox", "dn": "DN80", "od": 88.9, "id": 82.8 }, { "material": "Inox", "dn": "DN100", "od": 114.3, "id": 108.2 }, { "material": "Inox", "dn": "DN125", "od": 141.3, "id": 134.5 }, { "material": "Inox", "dn": "DN150", "od": 168.3, "id": 161.5 }, { "material": "Inox", "dn": "DN200", "od": 219.1, "id": 211.58 }], "materials": [{ "material": "HDPE", "c": 150, "roughness": 7e-3 }, { "material": "PPR", "c": 150, "roughness": 6e-3 }, { "material": "Copper", "c": 140, "roughness": 15e-4 }, { "material": "Inox", "c": 120, "roughness": 0.045 }], "fixtures": [{ "standard": "IPC", "systemType": null, "name": "WC -Water closet flushing cistern (private)", "abbr": "WCprc", "fuCold": 2.2, "fuHot": 0, "fuTotal": 2.2 }, { "standard": "IPC", "systemType": null, "name": "WC - Water closet flushing valve (private)", "abbr": "WCprv", "fuCold": 6, "fuHot": 0, "fuTotal": 5 }, { "standard": "IPC", "systemType": null, "name": "WC - Water closet flushing cistern (public)", "abbr": "WCpuc", "fuCold": 5, "fuHot": 0, "fuTotal": 5 }, { "standard": "IPC", "systemType": null, "name": "WC - Water closet flushing valve (public)", "abbr": "WCpuv", "fuCold": 10, "fuHot": 0, "fuTotal": 5 }, { "standard": "IPC", "systemType": null, "name": "UR - Urinal flushing valve (public-25mm)", "abbr": "URv25", "fuCold": 10, "fuHot": 0, "fuTotal": 5 }, { "standard": "IPC", "systemType": null, "name": "UR - Urinal flushing valve (public-20mm)", "abbr": "URv20", "fuCold": 5, "fuHot": 0, "fuTotal": 5 }, { "standard": "IPC", "systemType": null, "name": "UR - Urinal flushing tank (public)", "abbr": "URc", "fuCold": 3, "fuHot": 0, "fuTotal": 3 }, { "standard": "IPC", "systemType": null, "name": "Bd - Bidet (private)", "abbr": "Bd", "fuCold": 1.5, "fuHot": 0, "fuTotal": 2 }, { "standard": "IPC", "systemType": null, "name": "B - Basin (private)", "abbr": "Bpr", "fuCold": 0.5, "fuHot": 0.5, "fuTotal": 0.7 }, { "standard": "IPC", "systemType": null, "name": "B - Basin (public)", "abbr": "Bpu", "fuCold": 1.5, "fuHot": 1.5, "fuTotal": 2 }, { "standard": "IPC", "systemType": null, "name": "Bth - Bath tub (private)", "abbr": "BTHpr", "fuCold": 1, "fuHot": 1, "fuTotal": 1.4 }, { "standard": "IPC", "systemType": null, "name": "Bth - Bath tub (public)", "abbr": "BTHpu", "fuCold": 3, "fuHot": 3, "fuTotal": 4 }, { "standard": "IPC", "systemType": null, "name": "Shr - Shower head (private)", "abbr": "SHRpr", "fuCold": 1, "fuHot": 1, "fuTotal": 1.4 }, { "standard": "IPC", "systemType": null, "name": "Shr - Shower head (public)", "abbr": "SHRpu", "fuCold": 3, "fuHot": 3, "fuTotal": 4 }, { "standard": "IPC", "systemType": null, "name": "SK - Kitchen sink (private)", "abbr": "SKpr", "fuCold": 1, "fuHot": 1, "fuTotal": 1.4 }, { "standard": "IPC", "systemType": null, "name": "SK - Kitchen sink (restaurant)", "abbr": "KS", "fuCold": 3, "fuHot": 3, "fuTotal": 4 }, { "standard": "IPC", "systemType": null, "name": "SK - Service Sink (office)", "abbr": "SKof", "fuCold": 2.25, "fuHot": 2.25, "fuTotal": 3 }, { "standard": "IPC", "systemType": null, "name": "WM - Clothes-Washing machine (private-8lb)", "abbr": "WMpr", "fuCold": 1, "fuHot": 1, "fuTotal": 1.4 }, { "standard": "IPC", "systemType": null, "name": "WM - Clothes-Washing machine (public-15lb)", "abbr": "WMpu", "fuCold": 3, "fuHot": 3, "fuTotal": 4 }, { "standard": "IPC", "systemType": null, "name": "DW - Dishwashing machine  (private)", "abbr": "DW", "fuCold": 1.4, "fuHot": 1.4, "fuTotal": 1.4 }, { "standard": "BS EN", "systemType": "Medium", "name": "WC -Water closet", "abbr": "WC", "fuCold": 2, "fuHot": null, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Medium", "name": "UR - Urinal", "abbr": "Ur", "fuCold": 2, "fuHot": null, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Medium", "name": "B - Wash Basin DN15/ Tap", "abbr": "B", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Medium", "name": "Bth - Bath tap DN15", "abbr": "Bth", "fuCold": 8, "fuHot": 8, "fuTotal": 8 }, { "standard": "BS EN", "systemType": "Medium", "name": "Bth - Bath tap DN20", "abbr": "Bth", "fuCold": 11, "fuHot": 11, "fuTotal": 11 }, { "standard": "BS EN", "systemType": "Medium", "name": "Shr - Shower head", "abbr": "Shr", "fuCold": 3, "fuHot": 3, "fuTotal": 3 }, { "standard": "BS EN", "systemType": "Medium", "name": "SK - Sink Tap DN15", "abbr": "SK", "fuCold": 5, "fuHot": 5, "fuTotal": 5 }, { "standard": "BS EN", "systemType": "Medium", "name": "SK - Sink Tap DN20", "abbr": "SK", "fuCold": 7, "fuHot": 7, "fuTotal": 7 }, { "standard": "BS EN", "systemType": "Medium", "name": "WM - Washing machine", "abbr": "WM", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Medium", "name": "DW - Dishwashing machine  (private)", "abbr": "DW", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Small", "name": "WC -Water closet", "abbr": "WC", "fuCold": 1, "fuHot": null, "fuTotal": 1 }, { "standard": "BS EN", "systemType": "Small", "name": "UR - Urinal", "abbr": "Ur", "fuCold": 1, "fuHot": null, "fuTotal": 1 }, { "standard": "BS EN", "systemType": "Small", "name": "B - Wash Basin DN15/ Tap", "abbr": "B", "fuCold": 1, "fuHot": 1, "fuTotal": 1 }, { "standard": "BS EN", "systemType": "Small", "name": "Bth - Bath tap DN15", "abbr": "Bth", "fuCold": 4, "fuHot": 4, "fuTotal": 4 }, { "standard": "BS EN", "systemType": "Small", "name": "Bth - Bath tap DN20", "abbr": "Bth", "fuCold": null, "fuHot": null, "fuTotal": null }, { "standard": "BS EN", "systemType": "Small", "name": "Shr - Shower head", "abbr": "Shr", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Small", "name": "SK - Sink Tap DN15", "abbr": "SK", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Small", "name": "SK - Sink Tap DN20", "abbr": "SK", "fuCold": null, "fuHot": null, "fuTotal": null }, { "standard": "BS EN", "systemType": "Small", "name": "WM - Washing machine", "abbr": "WM", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Small", "name": "DW - Dishwashing machine  (private)", "abbr": "DW", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Large", "name": "WC -Water closet", "abbr": "WC", "fuCold": 1, "fuHot": null, "fuTotal": 5 }, { "standard": "BS EN", "systemType": "Large", "name": "UR - Urinal", "abbr": "Ur", "fuCold": 1, "fuHot": null, "fuTotal": 5 }, { "standard": "BS EN", "systemType": "Large", "name": "B - Wash Basin DN15/ Tap", "abbr": "B", "fuCold": 1, "fuHot": 1, "fuTotal": 4 }, { "standard": "BS EN", "systemType": "Large", "name": "Bth - Bath tap DN15", "abbr": "Bth", "fuCold": 4, "fuHot": 4, "fuTotal": 16 }, { "standard": "BS EN", "systemType": "Large", "name": "Bth - Bath tap DN20", "abbr": "Bth", "fuCold": null, "fuHot": null, "fuTotal": null }, { "standard": "BS EN", "systemType": "Large", "name": "Shr - Shower head", "abbr": "Shr", "fuCold": 2, "fuHot": 2, "fuTotal": 6 }, { "standard": "BS EN", "systemType": "Large", "name": "SK - Sink Tap DN15", "abbr": "SK", "fuCold": 2, "fuHot": 2, "fuTotal": 10 }, { "standard": "BS EN", "systemType": "Large", "name": "SK - Sink Tap DN20", "abbr": "SK", "fuCold": null, "fuHot": null, "fuTotal": null }, { "standard": "BS EN", "systemType": "Large", "name": "WM - Washing machine", "abbr": "WM", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "BS EN", "systemType": "Large", "name": "DW - Dishwashing machine  (private)", "abbr": "DW", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "QCVN", "systemType": null, "name": "WC -Water closet flushing cistern (private)", "abbr": "WCprc", "fuCold": 2.5, "fuHot": 0, "fuTotal": 2.5 }, { "standard": "QCVN", "systemType": null, "name": "WC - Water closet flushing valve (private)", "abbr": "WCprv", "fuCold": 5, "fuHot": 0, "fuTotal": 5 }, { "standard": "QCVN", "systemType": null, "name": "WC - Water closet flushing cistern (public)", "abbr": "WCpuc", "fuCold": 3, "fuHot": 0, "fuTotal": 3 }, { "standard": "QCVN", "systemType": null, "name": "WC - Water closet flushing valve (public)", "abbr": "WCpuv", "fuCold": 7, "fuHot": 0, "fuTotal": 7 }, { "standard": "QCVN", "systemType": null, "name": "UR - Urinal flushing valve (public-25mm)", "abbr": "URv25", "fuCold": 6, "fuHot": 0, "fuTotal": 6 }, { "standard": "QCVN", "systemType": null, "name": "UR - Urinal flushing valve (public-20mm)", "abbr": "URv20", "fuCold": 5, "fuHot": 0, "fuTotal": 5 }, { "standard": "QCVN", "systemType": null, "name": "UR - Urinal flushing tank (public)", "abbr": "URc", "fuCold": 4, "fuHot": 0, "fuTotal": 4 }, { "standard": "QCVN", "systemType": null, "name": "Bd - Bidet (private)", "abbr": "Bd", "fuCold": 1, "fuHot": 0, "fuTotal": 1 }, { "standard": "QCVN", "systemType": null, "name": "B - Basin (private)", "abbr": "Bpr", "fuCold": 1, "fuHot": 1, "fuTotal": 1 }, { "standard": "QCVN", "systemType": null, "name": "B - Basin (public)", "abbr": "Bpu", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "QCVN", "systemType": null, "name": "Bth - Bath tub (single)", "abbr": "BTHpr", "fuCold": 4, "fuHot": 4, "fuTotal": 4 }, { "standard": "QCVN", "systemType": null, "name": "Bth - Bath tub (from 3 occupants)", "abbr": "BTHpu", "fuCold": 3.5, "fuHot": 3.5, "fuTotal": 3.5 }, { "standard": "QCVN", "systemType": null, "name": "Shr - Shower head (private)", "abbr": "SHRpr", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "QCVN", "systemType": null, "name": "Shr - Shower head (public)", "abbr": "SHRpu", "fuCold": 5, "fuHot": 5, "fuTotal": 5 }, { "standard": "QCVN", "systemType": null, "name": "SK - Kitchen sink (private)", "abbr": "SKpr", "fuCold": 1.5, "fuHot": 1.5, "fuTotal": 1.5 }, { "standard": "QCVN", "systemType": null, "name": "SK - Service Sink (office)", "abbr": "SKof", "fuCold": 1.5, "fuHot": 1.5, "fuTotal": 1.5 }, { "standard": "QCVN", "systemType": null, "name": "WM - Clothes-Washing machine (private)", "abbr": "WMpr", "fuCold": 2.5, "fuHot": 2.5, "fuTotal": 2.5 }, { "standard": "QCVN", "systemType": null, "name": "WM - Clothes-Washing machine   (from 3 occupants)", "abbr": "DW", "fuCold": 4, "fuHot": 4, "fuTotal": 4 }, { "standard": "QCVN", "systemType": null, "name": "DW - Dishwashing machine  (single)", "abbr": "DW", "fuCold": 1.5, "fuHot": 1.5, "fuTotal": 1.5 }, { "standard": "AS NZS", "systemType": null, "name": "WC -Water closet flushing cistern", "abbr": "WC", "fuCold": 2, "fuHot": null, "fuTotal": 2 }, { "standard": "AS NZS", "systemType": null, "name": "Bth - Bath tub", "abbr": "BTH", "fuCold": 8, "fuHot": 4, "fuTotal": 8 }, { "standard": "AS NZS", "systemType": null, "name": "B - Basin", "abbr": "B", "fuCold": 1, "fuHot": 1, "fuTotal": 1 }, { "standard": "AS NZS", "systemType": null, "name": "Spray tap", "abbr": "St", "fuCold": 0.5, "fuHot": 0.5, "fuTotal": 0.5 }, { "standard": "AS NZS", "systemType": null, "name": "Shr - Shower head", "abbr": "SHR", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "AS NZS", "systemType": null, "name": "SK - Sink (standard tap)", "abbr": "SK", "fuCold": 3, "fuHot": 3, "fuTotal": 3 }, { "standard": "AS NZS", "systemType": null, "name": "SK - Sink (aerator tap)", "abbr": "SK", "fuCold": 2, "fuHot": 2, "fuTotal": 2 }, { "standard": "AS NZS", "systemType": null, "name": "LT - Laundry trough", "abbr": "LT", "fuCold": 3, "fuHot": 3, "fuTotal": 3 }, { "standard": "AS NZS", "systemType": null, "name": "WM - Washing Machine/ Dishwasher", "abbr": "WM", "fuCold": 3, "fuHot": 2, "fuTotal": 3 }, { "standard": "AS NZS", "systemType": null, "name": "WH - Main pressure water heater", "abbr": "WH", "fuCold": 8, "fuHot": null, "fuTotal": 8 }, { "standard": "AS NZS", "systemType": null, "name": "HT - Hose tap (DN20)", "abbr": "HT", "fuCold": 8, "fuHot": null, "fuTotal": 8 }, { "standard": "AS NZS", "systemType": null, "name": "HT - Hose tap (DN15)", "abbr": "HT", "fuCold": 4, "fuHot": null, "fuTotal": 4 }], "fu2flow": [{ "standard": "IPC", "type": "Flush tank", "fu": 1, "ls": 0.189 }, { "standard": "IPC", "type": "Flush tank", "fu": 2, "ls": 0.315 }, { "standard": "IPC", "type": "Flush tank", "fu": 3, "ls": 0.4095 }, { "standard": "IPC", "type": "Flush tank", "fu": 4, "ls": 0.504 }, { "standard": "IPC", "type": "Flush tank", "fu": 5, "ls": 0.5922000000000001 }, { "standard": "IPC", "type": "Flush tank", "fu": 6, "ls": 0.6740999999999999 }, { "standard": "IPC", "type": "Flush tank", "fu": 7, "ls": 0.7434000000000001 }, { "standard": "IPC", "type": "Flush tank", "fu": 8, "ls": 0.8064 }, { "standard": "IPC", "type": "Flush tank", "fu": 9, "ls": 0.8631 }, { "standard": "IPC", "type": "Flush tank", "fu": 10, "ls": 0.9198 }, { "standard": "IPC", "type": "Flush tank", "fu": 11, "ls": 0.9702000000000001 }, { "standard": "IPC", "type": "Flush tank", "fu": 12, "ls": 1.008 }, { "standard": "IPC", "type": "Flush tank", "fu": 13, "ls": 1.0395 }, { "standard": "IPC", "type": "Flush tank", "fu": 14, "ls": 1.071 }, { "standard": "IPC", "type": "Flush tank", "fu": 15, "ls": 1.1025 }, { "standard": "IPC", "type": "Flush tank", "fu": 16, "ls": 1.134 }, { "standard": "IPC", "type": "Flush tank", "fu": 17, "ls": 1.1592 }, { "standard": "IPC", "type": "Flush tank", "fu": 18, "ls": 1.1844000000000001 }, { "standard": "IPC", "type": "Flush tank", "fu": 19, "ls": 1.2096 }, { "standard": "IPC", "type": "Flush tank", "fu": 20, "ls": 1.2348000000000001 }, { "standard": "IPC", "type": "Flush tank", "fu": 25, "ls": 1.3545 }, { "standard": "IPC", "type": "Flush tank", "fu": 30, "ls": 1.4679 }, { "standard": "IPC", "type": "Flush tank", "fu": 35, "ls": 1.5687 }, { "standard": "IPC", "type": "Flush tank", "fu": 40, "ls": 1.6569 }, { "standard": "IPC", "type": "Flush tank", "fu": 45, "ls": 1.7450999999999999 }, { "standard": "IPC", "type": "Flush tank", "fu": 50, "ls": 1.8333000000000002 }, { "standard": "IPC", "type": "Flush tank", "fu": 60, "ls": 2.016 }, { "standard": "IPC", "type": "Flush tank", "fu": 70, "ls": 2.205 }, { "standard": "IPC", "type": "Flush tank", "fu": 80, "ls": 2.394 }, { "standard": "IPC", "type": "Flush tank", "fu": 90, "ls": 2.583 }, { "standard": "IPC", "type": "Flush tank", "fu": 100, "ls": 2.7405 }, { "standard": "IPC", "type": "Flush tank", "fu": 120, "ls": 3.024 }, { "standard": "IPC", "type": "Flush tank", "fu": 140, "ls": 3.3075 }, { "standard": "IPC", "type": "Flush tank", "fu": 160, "ls": 3.591 }, { "standard": "IPC", "type": "Flush tank", "fu": 180, "ls": 3.843 }, { "standard": "IPC", "type": "Flush tank", "fu": 200, "ls": 4.095 }, { "standard": "IPC", "type": "Flush tank", "fu": 225, "ls": 4.41 }, { "standard": "IPC", "type": "Flush tank", "fu": 250, "ls": 4.725 }, { "standard": "IPC", "type": "Flush tank", "fu": 275, "ls": 5.04 }, { "standard": "IPC", "type": "Flush tank", "fu": 300, "ls": 5.355 }, { "standard": "IPC", "type": "Flush tank", "fu": 400, "ls": 6.615 }, { "standard": "IPC", "type": "Flush tank", "fu": 500, "ls": 7.812 }, { "standard": "IPC", "type": "Flush tank", "fu": 750, "ls": 10.71 }, { "standard": "IPC", "type": "Flush tank", "fu": 1e3, "ls": 13.104 }, { "standard": "IPC", "type": "Flush tank", "fu": 1250, "ls": 15.057 }, { "standard": "IPC", "type": "Flush tank", "fu": 1500, "ls": 16.947 }, { "standard": "IPC", "type": "Flush tank", "fu": 1750, "ls": 18.711 }, { "standard": "IPC", "type": "Flush tank", "fu": 2e3, "ls": 20.475 }, { "standard": "IPC", "type": "Flush tank", "fu": 2500, "ls": 23.94 }, { "standard": "IPC", "type": "Flush tank", "fu": 3e3, "ls": 27.279 }, { "standard": "IPC", "type": "Flush tank", "fu": 4e3, "ls": 33.705 }, { "standard": "IPC", "type": "Flush tank", "fu": 5e3, "ls": 37.359 }, { "standard": "IPC", "type": "Flush valve", "fu": 5, "ls": 0.946 }, { "standard": "IPC", "type": "Flush valve", "fu": 6, "ls": 1.098 }, { "standard": "IPC", "type": "Flush valve", "fu": 7, "ls": 1.249 }, { "standard": "IPC", "type": "Flush valve", "fu": 8, "ls": 1.401 }, { "standard": "IPC", "type": "Flush valve", "fu": 9, "ls": 1.552 }, { "standard": "IPC", "type": "Flush valve", "fu": 10, "ls": 1.703 }, { "standard": "IPC", "type": "Flush valve", "fu": 11, "ls": 1.754 }, { "standard": "IPC", "type": "Flush valve", "fu": 12, "ls": 1.805 }, { "standard": "IPC", "type": "Flush valve", "fu": 13, "ls": 1.855 }, { "standard": "IPC", "type": "Flush valve", "fu": 14, "ls": 1.906 }, { "standard": "IPC", "type": "Flush valve", "fu": 15, "ls": 1.956 }, { "standard": "IPC", "type": "Flush valve", "fu": 16, "ls": 2.007 }, { "standard": "IPC", "type": "Flush valve", "fu": 17, "ls": 2.057 }, { "standard": "IPC", "type": "Flush valve", "fu": 18, "ls": 2.108 }, { "standard": "IPC", "type": "Flush valve", "fu": 19, "ls": 2.158 }, { "standard": "IPC", "type": "Flush valve", "fu": 20, "ls": 2.208 }, { "standard": "IPC", "type": "Flush valve", "fu": 25, "ls": 2.397 }, { "standard": "IPC", "type": "Flush valve", "fu": 30, "ls": 2.65 }, { "standard": "IPC", "type": "Flush valve", "fu": 35, "ls": 2.776 }, { "standard": "IPC", "type": "Flush valve", "fu": 40, "ls": 2.965 }, { "standard": "IPC", "type": "Flush valve", "fu": 45, "ls": 3.092 }, { "standard": "IPC", "type": "Flush valve", "fu": 50, "ls": 3.249 }, { "standard": "IPC", "type": "Flush valve", "fu": 60, "ls": 3.47 }, { "standard": "IPC", "type": "Flush valve", "fu": 70, "ls": 3.722 }, { "standard": "IPC", "type": "Flush valve", "fu": 80, "ls": 3.943 }, { "standard": "IPC", "type": "Flush valve", "fu": 90, "ls": 4.101 }, { "standard": "IPC", "type": "Flush valve", "fu": 100, "ls": 4.29 }, { "standard": "IPC", "type": "Flush valve", "fu": 120, "ls": 4.606 }, { "standard": "IPC", "type": "Flush valve", "fu": 140, "ls": 4.922 }, { "standard": "IPC", "type": "Flush valve", "fu": 160, "ls": 5.237 }, { "standard": "IPC", "type": "Flush valve", "fu": 180, "ls": 5.489 }, { "standard": "IPC", "type": "Flush valve", "fu": 200, "ls": 5.742 }, { "standard": "IPC", "type": "Flush valve", "fu": 225, "ls": 6.025 }, { "standard": "IPC", "type": "Flush valve", "fu": 250, "ls": 6.309 }, { "standard": "IPC", "type": "Flush valve", "fu": 275, "ls": 6.593 }, { "standard": "IPC", "type": "Flush valve", "fu": 300, "ls": 6.814 }, { "standard": "IPC", "type": "Flush valve", "fu": 400, "ls": 8.013 }, { "standard": "IPC", "type": "Flush valve", "fu": 500, "ls": 9.023 }, { "standard": "IPC", "type": "Flush valve", "fu": 750, "ls": 11.168 }, { "standard": "IPC", "type": "Flush valve", "fu": 1e3, "ls": 13.124 }, { "standard": "IPC", "type": "Flush valve", "fu": 1250, "ls": 15.079 }, { "standard": "IPC", "type": "Flush valve", "fu": 1500, "ls": 16.973 }, { "standard": "IPC", "type": "Flush valve", "fu": 1750, "ls": 18.74 }, { "standard": "IPC", "type": "Flush valve", "fu": 2e3, "ls": 20.507 }, { "standard": "IPC", "type": "Flush valve", "fu": 2500, "ls": 23.974 }, { "standard": "IPC", "type": "Flush valve", "fu": 3e3, "ls": 27.319 }, { "standard": "IPC", "type": "Flush valve", "fu": 4e3, "ls": 33.125 }, { "standard": "IPC", "type": "Flush valve", "fu": 5e3, "ls": 37.413 }, { "standard": "BS EN", "type": "Flush tank", "fu": 1, "ls": 0.1 }, { "standard": "BS EN", "type": "Flush tank", "fu": 5, "ls": 0.2 }, { "standard": "BS EN", "type": "Flush tank", "fu": 10, "ls": 0.3 }, { "standard": "BS EN", "type": "Flush tank", "fu": 20, "ls": 0.44 }, { "standard": "BS EN", "type": "Flush tank", "fu": 30, "ls": 0.56 }, { "standard": "BS EN", "type": "Flush tank", "fu": 40, "ls": 0.7 }, { "standard": "BS EN", "type": "Flush tank", "fu": 50, "ls": 0.77 }, { "standard": "BS EN", "type": "Flush tank", "fu": 60, "ls": 0.9 }, { "standard": "BS EN", "type": "Flush tank", "fu": 80, "ls": 1.06 }, { "standard": "BS EN", "type": "Flush tank", "fu": 100, "ls": 1.25 }, { "standard": "BS EN", "type": "Flush tank", "fu": 150, "ls": 1.68 }, { "standard": "BS EN", "type": "Flush tank", "fu": 200, "ls": 2.1 }, { "standard": "BS EN", "type": "Flush tank", "fu": 300, "ls": 2.8 }, { "standard": "BS EN", "type": "Flush tank", "fu": 400, "ls": 3.53 }, { "standard": "BS EN", "type": "Flush tank", "fu": 500, "ls": 4.1 }, { "standard": "BS EN", "type": "Flush tank", "fu": 700, "ls": 5.25 }, { "standard": "BS EN", "type": "Flush tank", "fu": 1e3, "ls": 6.8 }, { "standard": "BS EN", "type": "Flush tank", "fu": 1500, "ls": 9.2 }, { "standard": "BS EN", "type": "Flush tank", "fu": 2e3, "ls": 11.2 }, { "standard": "BS EN", "type": "Flush tank", "fu": 3e3, "ls": 15.2 }, { "standard": "BS EN", "type": "Flush tank", "fu": 4e3, "ls": 18.5 }, { "standard": "BS EN", "type": "Flush tank", "fu": 5e3, "ls": 22 }, { "standard": "BS EN", "type": "Flush tank", "fu": 6e3, "ls": 25.2 }, { "standard": "BS EN", "type": "Flush tank", "fu": 7e3, "ls": 28 }, { "standard": "BS EN", "type": "Flush tank", "fu": 7700, "ls": 30 }, { "standard": "BS EN", "type": "Flush valve", "fu": 1, "ls": 0.15 }, { "standard": "BS EN", "type": "Flush valve", "fu": 5, "ls": 0.2 }, { "standard": "BS EN", "type": "Flush valve", "fu": 10, "ls": 0.3 }, { "standard": "BS EN", "type": "Flush valve", "fu": 20, "ls": 0.44 }, { "standard": "BS EN", "type": "Flush valve", "fu": 30, "ls": 0.56 }, { "standard": "BS EN", "type": "Flush valve", "fu": 40, "ls": 0.7 }, { "standard": "BS EN", "type": "Flush valve", "fu": 50, "ls": 0.77 }, { "standard": "BS EN", "type": "Flush valve", "fu": 60, "ls": 0.9 }, { "standard": "BS EN", "type": "Flush valve", "fu": 80, "ls": 1.06 }, { "standard": "BS EN", "type": "Flush valve", "fu": 100, "ls": 1.25 }, { "standard": "BS EN", "type": "Flush valve", "fu": 150, "ls": 1.68 }, { "standard": "BS EN", "type": "Flush valve", "fu": 200, "ls": 2.1 }, { "standard": "BS EN", "type": "Flush valve", "fu": 300, "ls": 2.8 }, { "standard": "BS EN", "type": "Flush valve", "fu": 400, "ls": 3.53 }, { "standard": "BS EN", "type": "Flush valve", "fu": 500, "ls": 4.1 }, { "standard": "BS EN", "type": "Flush valve", "fu": 700, "ls": 5.25 }, { "standard": "BS EN", "type": "Flush valve", "fu": 1e3, "ls": 6.8 }, { "standard": "BS EN", "type": "Flush valve", "fu": 1500, "ls": 9.2 }, { "standard": "BS EN", "type": "Flush valve", "fu": 2e3, "ls": 11.2 }, { "standard": "BS EN", "type": "Flush valve", "fu": 3e3, "ls": 15.2 }, { "standard": "BS EN", "type": "Flush valve", "fu": 4e3, "ls": 18.5 }, { "standard": "BS EN", "type": "Flush valve", "fu": 5e3, "ls": 22 }, { "standard": "BS EN", "type": "Flush valve", "fu": 6e3, "ls": 25.2 }, { "standard": "BS EN", "type": "Flush valve", "fu": 7e3, "ls": 28 }, { "standard": "BS EN", "type": "Flush valve", "fu": 7700, "ls": 30 }, { "standard": "QCVN", "type": "Flush tank", "fu": 1, "ls": 0.189 }, { "standard": "QCVN", "type": "Flush tank", "fu": 2, "ls": 0.315 }, { "standard": "QCVN", "type": "Flush tank", "fu": 3, "ls": 0.4095 }, { "standard": "QCVN", "type": "Flush tank", "fu": 4, "ls": 0.504 }, { "standard": "QCVN", "type": "Flush tank", "fu": 5, "ls": 0.5922000000000001 }, { "standard": "QCVN", "type": "Flush tank", "fu": 6, "ls": 0.6740999999999999 }, { "standard": "QCVN", "type": "Flush tank", "fu": 7, "ls": 0.7434000000000001 }, { "standard": "QCVN", "type": "Flush tank", "fu": 8, "ls": 0.8064 }, { "standard": "QCVN", "type": "Flush tank", "fu": 9, "ls": 0.8631 }, { "standard": "QCVN", "type": "Flush tank", "fu": 10, "ls": 0.9198 }, { "standard": "QCVN", "type": "Flush tank", "fu": 11, "ls": 0.9702000000000001 }, { "standard": "QCVN", "type": "Flush tank", "fu": 12, "ls": 1.008 }, { "standard": "QCVN", "type": "Flush tank", "fu": 13, "ls": 1.0395 }, { "standard": "QCVN", "type": "Flush tank", "fu": 14, "ls": 1.071 }, { "standard": "QCVN", "type": "Flush tank", "fu": 15, "ls": 1.1025 }, { "standard": "QCVN", "type": "Flush tank", "fu": 16, "ls": 1.134 }, { "standard": "QCVN", "type": "Flush tank", "fu": 17, "ls": 1.1592 }, { "standard": "QCVN", "type": "Flush tank", "fu": 18, "ls": 1.1844000000000001 }, { "standard": "QCVN", "type": "Flush tank", "fu": 19, "ls": 1.2096 }, { "standard": "QCVN", "type": "Flush tank", "fu": 20, "ls": 1.2348000000000001 }, { "standard": "QCVN", "type": "Flush tank", "fu": 25, "ls": 1.3545 }, { "standard": "QCVN", "type": "Flush tank", "fu": 30, "ls": 1.4679 }, { "standard": "QCVN", "type": "Flush tank", "fu": 35, "ls": 1.5687 }, { "standard": "QCVN", "type": "Flush tank", "fu": 40, "ls": 1.6569 }, { "standard": "QCVN", "type": "Flush tank", "fu": 45, "ls": 1.7450999999999999 }, { "standard": "QCVN", "type": "Flush tank", "fu": 50, "ls": 1.8333000000000002 }, { "standard": "QCVN", "type": "Flush tank", "fu": 60, "ls": 2.016 }, { "standard": "QCVN", "type": "Flush tank", "fu": 70, "ls": 2.205 }, { "standard": "QCVN", "type": "Flush tank", "fu": 80, "ls": 2.394 }, { "standard": "QCVN", "type": "Flush tank", "fu": 90, "ls": 2.583 }, { "standard": "QCVN", "type": "Flush tank", "fu": 100, "ls": 2.7405 }, { "standard": "QCVN", "type": "Flush tank", "fu": 120, "ls": 3.024 }, { "standard": "QCVN", "type": "Flush tank", "fu": 140, "ls": 3.3075 }, { "standard": "QCVN", "type": "Flush tank", "fu": 160, "ls": 3.591 }, { "standard": "QCVN", "type": "Flush tank", "fu": 180, "ls": 3.843 }, { "standard": "QCVN", "type": "Flush tank", "fu": 200, "ls": 4.095 }, { "standard": "QCVN", "type": "Flush tank", "fu": 225, "ls": 4.41 }, { "standard": "QCVN", "type": "Flush tank", "fu": 250, "ls": 4.725 }, { "standard": "QCVN", "type": "Flush tank", "fu": 275, "ls": 5.04 }, { "standard": "QCVN", "type": "Flush tank", "fu": 300, "ls": 5.355 }, { "standard": "QCVN", "type": "Flush tank", "fu": 400, "ls": 6.615 }, { "standard": "QCVN", "type": "Flush tank", "fu": 500, "ls": 7.812 }, { "standard": "QCVN", "type": "Flush tank", "fu": 750, "ls": 10.71 }, { "standard": "QCVN", "type": "Flush tank", "fu": 1e3, "ls": 13.104 }, { "standard": "QCVN", "type": "Flush tank", "fu": 1250, "ls": 15.057 }, { "standard": "QCVN", "type": "Flush tank", "fu": 1500, "ls": 16.947 }, { "standard": "QCVN", "type": "Flush tank", "fu": 1750, "ls": 18.711 }, { "standard": "QCVN", "type": "Flush tank", "fu": 2e3, "ls": 20.475 }, { "standard": "QCVN", "type": "Flush tank", "fu": 2500, "ls": 23.94 }, { "standard": "QCVN", "type": "Flush tank", "fu": 3e3, "ls": 27.279 }, { "standard": "QCVN", "type": "Flush tank", "fu": 4e3, "ls": 33.705 }, { "standard": "QCVN", "type": "Flush tank", "fu": 5e3, "ls": 37.359 }, { "standard": "QCVN", "type": "Flush valve", "fu": 5, "ls": 0.946 }, { "standard": "QCVN", "type": "Flush valve", "fu": 6, "ls": 1.098 }, { "standard": "QCVN", "type": "Flush valve", "fu": 7, "ls": 1.249 }, { "standard": "QCVN", "type": "Flush valve", "fu": 8, "ls": 1.401 }, { "standard": "QCVN", "type": "Flush valve", "fu": 9, "ls": 1.552 }, { "standard": "QCVN", "type": "Flush valve", "fu": 10, "ls": 1.703 }, { "standard": "QCVN", "type": "Flush valve", "fu": 11, "ls": 1.754 }, { "standard": "QCVN", "type": "Flush valve", "fu": 12, "ls": 1.805 }, { "standard": "QCVN", "type": "Flush valve", "fu": 13, "ls": 1.855 }, { "standard": "QCVN", "type": "Flush valve", "fu": 14, "ls": 1.906 }, { "standard": "QCVN", "type": "Flush valve", "fu": 15, "ls": 1.956 }, { "standard": "QCVN", "type": "Flush valve", "fu": 16, "ls": 2.007 }, { "standard": "QCVN", "type": "Flush valve", "fu": 17, "ls": 2.057 }, { "standard": "QCVN", "type": "Flush valve", "fu": 18, "ls": 2.108 }, { "standard": "QCVN", "type": "Flush valve", "fu": 19, "ls": 2.158 }, { "standard": "QCVN", "type": "Flush valve", "fu": 20, "ls": 2.208 }, { "standard": "QCVN", "type": "Flush valve", "fu": 25, "ls": 2.397 }, { "standard": "QCVN", "type": "Flush valve", "fu": 30, "ls": 2.65 }, { "standard": "QCVN", "type": "Flush valve", "fu": 35, "ls": 2.776 }, { "standard": "QCVN", "type": "Flush valve", "fu": 40, "ls": 2.965 }, { "standard": "QCVN", "type": "Flush valve", "fu": 45, "ls": 3.092 }, { "standard": "QCVN", "type": "Flush valve", "fu": 50, "ls": 3.249 }, { "standard": "QCVN", "type": "Flush valve", "fu": 60, "ls": 3.47 }, { "standard": "QCVN", "type": "Flush valve", "fu": 70, "ls": 3.722 }, { "standard": "QCVN", "type": "Flush valve", "fu": 80, "ls": 3.943 }, { "standard": "QCVN", "type": "Flush valve", "fu": 90, "ls": 4.101 }, { "standard": "QCVN", "type": "Flush valve", "fu": 100, "ls": 4.29 }, { "standard": "QCVN", "type": "Flush valve", "fu": 120, "ls": 4.606 }, { "standard": "QCVN", "type": "Flush valve", "fu": 140, "ls": 4.922 }, { "standard": "QCVN", "type": "Flush valve", "fu": 160, "ls": 5.237 }, { "standard": "QCVN", "type": "Flush valve", "fu": 180, "ls": 5.489 }, { "standard": "QCVN", "type": "Flush valve", "fu": 200, "ls": 5.742 }, { "standard": "QCVN", "type": "Flush valve", "fu": 225, "ls": 6.025 }, { "standard": "QCVN", "type": "Flush valve", "fu": 250, "ls": 6.309 }, { "standard": "QCVN", "type": "Flush valve", "fu": 275, "ls": 6.593 }, { "standard": "QCVN", "type": "Flush valve", "fu": 300, "ls": 6.814 }, { "standard": "QCVN", "type": "Flush valve", "fu": 400, "ls": 8.013 }, { "standard": "QCVN", "type": "Flush valve", "fu": 500, "ls": 9.023 }, { "standard": "QCVN", "type": "Flush valve", "fu": 750, "ls": 11.168 }, { "standard": "QCVN", "type": "Flush valve", "fu": 1e3, "ls": 13.124 }, { "standard": "QCVN", "type": "Flush valve", "fu": 1250, "ls": 15.079 }, { "standard": "QCVN", "type": "Flush valve", "fu": 1500, "ls": 16.973 }, { "standard": "QCVN", "type": "Flush valve", "fu": 1750, "ls": 18.74 }, { "standard": "QCVN", "type": "Flush valve", "fu": 2e3, "ls": 20.507 }, { "standard": "QCVN", "type": "Flush valve", "fu": 2500, "ls": 23.974 }, { "standard": "QCVN", "type": "Flush valve", "fu": 3e3, "ls": 27.319 }, { "standard": "QCVN", "type": "Flush valve", "fu": 4e3, "ls": 33.125 }, { "standard": "QCVN", "type": "Flush valve", "fu": 5e3, "ls": 37.413 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1, "ls": 0.09 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2, "ls": 0.12 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 3, "ls": 0.14 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 4, "ls": 0.16 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 5, "ls": 0.18 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 6, "ls": 0.2 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 7, "ls": 0.22 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 8, "ls": 0.24 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 9, "ls": 0.25 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 10, "ls": 0.26 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 11, "ls": 0.28 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 12, "ls": 0.29 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 13, "ls": 0.3 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 14, "ls": 0.31 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 15, "ls": 0.33 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 16, "ls": 0.34 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 17, "ls": 0.35 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 18, "ls": 0.36 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 19, "ls": 0.37 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 20, "ls": 0.38 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 21, "ls": 0.39 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 22, "ls": 0.4 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 23, "ls": 0.41 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 24, "ls": 0.42 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 25, "ls": 0.43 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 26, "ls": 0.43 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 27, "ls": 0.44 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 28, "ls": 0.45 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 29, "ls": 0.46 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 30, "ls": 0.47 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 31, "ls": 0.48 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 32, "ls": 0.49 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 33, "ls": 0.49 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 34, "ls": 0.5 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 35, "ls": 0.51 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 36, "ls": 0.52 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 37, "ls": 0.52 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 38, "ls": 0.53 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 39, "ls": 0.54 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 40, "ls": 0.55 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 41, "ls": 0.55 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 42, "ls": 0.56 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 43, "ls": 0.57 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 44, "ls": 0.58 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 45, "ls": 0.58 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 46, "ls": 0.59 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 47, "ls": 0.6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 48, "ls": 0.6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 49, "ls": 0.61 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 50, "ls": 0.62 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 51, "ls": 0.62 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 52, "ls": 0.63 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 53, "ls": 0.64 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 54, "ls": 0.64 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 55, "ls": 0.65 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 56, "ls": 0.65 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 57, "ls": 0.66 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 58, "ls": 0.67 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 59, "ls": 0.67 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 60, "ls": 0.68 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 100, "ls": 1.2 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 150, "ls": 1.35 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 200, "ls": 1.45 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 250, "ls": 1.6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 300, "ls": 1.7 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 350, "ls": 1.85 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 400, "ls": 2 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 450, "ls": 2.15 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 500, "ls": 2.35 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 550, "ls": 2.5 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 600, "ls": 2.6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 650, "ls": 2.75 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 700, "ls": 2.85 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 750, "ls": 2.95 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 800, "ls": 3.05 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 850, "ls": 3.2 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 900, "ls": 3.3 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1e3, "ls": 3.5 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1200, "ls": 3.8 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1400, "ls": 4.2 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1600, "ls": 4.6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 1800, "ls": 4.9 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2e3, "ls": 5.25 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2200, "ls": 5.5 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2400, "ls": 5.75 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2600, "ls": 6 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 2800, "ls": 6.35 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 3e3, "ls": 6.7 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 3500, "ls": 7.25 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 4e3, "ls": 7.75 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 4500, "ls": 8.4 }, { "standard": "AS NZS", "type": "Flush tank", "fu": 5e3, "ls": 9 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1, "ls": 0.09 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2, "ls": 0.12 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 3, "ls": 0.14 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 4, "ls": 0.16 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 5, "ls": 0.18 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 6, "ls": 0.2 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 7, "ls": 0.22 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 8, "ls": 0.24 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 9, "ls": 0.25 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 10, "ls": 0.26 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 11, "ls": 0.28 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 12, "ls": 0.29 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 13, "ls": 0.3 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 14, "ls": 0.31 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 15, "ls": 0.33 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 16, "ls": 0.34 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 17, "ls": 0.35 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 18, "ls": 0.36 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 19, "ls": 0.37 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 20, "ls": 0.38 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 21, "ls": 0.39 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 22, "ls": 0.4 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 23, "ls": 0.41 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 24, "ls": 0.42 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 25, "ls": 0.43 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 26, "ls": 0.43 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 27, "ls": 0.44 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 28, "ls": 0.45 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 29, "ls": 0.46 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 30, "ls": 0.47 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 31, "ls": 0.48 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 32, "ls": 0.49 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 33, "ls": 0.49 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 34, "ls": 0.5 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 35, "ls": 0.51 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 36, "ls": 0.52 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 37, "ls": 0.52 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 38, "ls": 0.53 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 39, "ls": 0.54 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 40, "ls": 0.55 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 41, "ls": 0.55 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 42, "ls": 0.56 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 43, "ls": 0.57 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 44, "ls": 0.58 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 45, "ls": 0.58 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 46, "ls": 0.59 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 47, "ls": 0.6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 48, "ls": 0.6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 49, "ls": 0.61 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 50, "ls": 0.62 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 51, "ls": 0.62 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 52, "ls": 0.63 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 53, "ls": 0.64 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 54, "ls": 0.64 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 55, "ls": 0.65 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 56, "ls": 0.65 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 57, "ls": 0.66 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 58, "ls": 0.67 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 59, "ls": 0.67 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 60, "ls": 0.68 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 100, "ls": 1.2 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 150, "ls": 1.35 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 200, "ls": 1.45 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 250, "ls": 1.6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 300, "ls": 1.7 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 350, "ls": 1.85 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 400, "ls": 2 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 450, "ls": 2.15 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 500, "ls": 2.35 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 550, "ls": 2.5 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 600, "ls": 2.6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 650, "ls": 2.75 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 700, "ls": 2.85 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 750, "ls": 2.95 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 800, "ls": 3.05 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 850, "ls": 3.2 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 900, "ls": 3.3 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1e3, "ls": 3.5 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1200, "ls": 3.8 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1400, "ls": 4.2 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1600, "ls": 4.6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 1800, "ls": 4.9 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2e3, "ls": 5.25 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2200, "ls": 5.5 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2400, "ls": 5.75 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2600, "ls": 6 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 2800, "ls": 6.35 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 3e3, "ls": 6.7 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 3500, "ls": 7.25 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 4e3, "ls": 7.75 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 4500, "ls": 8.4 }, { "standard": "AS NZS", "type": "Flush valve", "fu": 5e3, "ls": 9 }], "velocity": [{ "standard": "IPC", "building": "Residential", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "IPC", "building": "Hotel", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "IPC", "building": "Hospital", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "BS EN", "building": "Residential", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "BS EN", "building": "Hotel", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "BS EN", "building": "Hospital", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "QCVN", "building": "Residential", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "QCVN", "building": "Hotel", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "QCVN", "building": "Hospital", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "AS NZS", "building": "Residential", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "AS NZS", "building": "Hotel", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "AS NZS", "building": "Hospital", "system": "CW", "recommended": 1.5, "maximum": 2 }, { "standard": "IPC", "building": "Residential", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "IPC", "building": "Hotel", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "IPC", "building": "Hospital", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "BS EN", "building": "Residential", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "BS EN", "building": "Hotel", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "BS EN", "building": "Hospital", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "QCVN", "building": "Residential", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "QCVN", "building": "Hotel", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "QCVN", "building": "Hospital", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "AS NZS", "building": "Residential", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "AS NZS", "building": "Hotel", "system": "HW", "recommended": 1, "maximum": 1.5 }, { "standard": "AS NZS", "building": "Hospital", "system": "HW", "recommended": 1, "maximum": 1.5 }] };
+  var STANDARD_MAP = {
+    "IPC": { id: "std_ipc", name: "IPC" },
+    "BS EN": { id: "std_bsen", name: "BS EN" },
+    "QCVN": { id: "std_qcvn", name: "QCVN" },
+    "AS NZS": { id: "std_asnzs", name: "AS NZS" }
+  };
+  function buildReferenceDataPack(raw) {
+    const fixtureCatalog = raw.fixtures.map((f, idx) => ({
+      fixtureId: `fx_${STANDARD_MAP[f.standard].id}_${idx}`,
+      standardId: STANDARD_MAP[f.standard].id,
+      systemType: f.systemType,
+      name: f.name,
+      abbr: f.abbr,
+      fuCold: f.fuCold,
+      fuHot: f.fuHot,
+      fuTotal: f.fuTotal
+    }));
+    const fu2flowTable = raw.fu2flow.map((r) => ({
+      standardId: STANDARD_MAP[r.standard].id,
+      type: r.type,
+      fu: r.fu,
+      ls: r.ls
+    }));
+    const velocityCriteria = raw.velocity.map((r) => ({
+      standardId: STANDARD_MAP[r.standard].id,
+      building: r.building,
+      system: r.system,
+      recommended: r.recommended,
+      maximum: r.maximum
+    }));
+    const standards = Object.values(STANDARD_MAP).map((s) => ({ standardId: s.id, displayName: s.name }));
+    return { packVersion: "v1", pipeSizes: raw.pipeSizes, materials: raw.materials, standards, fixtureCatalog, fu2flowTable, velocityCriteria };
+  }
+  function interpolate(table, standardId, type, totalFU) {
+    const rows = table.filter((r) => r.standardId === standardId && r.type === type && r.ls != null).sort((a, b) => a.fu - b.fu);
+    if (rows.length === 0) return null;
+    const min = rows[0].fu, max = rows[rows.length - 1].fu;
+    if (totalFU < min || totalFU > max) return null;
+    for (let i = 0; i < rows.length - 1; i++) {
+      const a = rows[i], b = rows[i + 1];
+      if (totalFU >= a.fu && totalFU <= b.fu) {
+        if (b.fu === a.fu) return a.ls;
+        const t = (totalFU - a.fu) / (b.fu - a.fu);
+        return a.ls + t * (b.ls - a.ls);
+      }
+    }
+    return rows[rows.length - 1].ls;
+  }
+  function crossSectionArea(idMm) {
+    const r = idMm / 2 / 1e3;
+    return Math.PI * r * r;
+  }
+  function velocityMs(flowLs, idMm) {
+    const flowM3s = flowLs / 1e3;
+    const area = crossSectionArea(idMm);
+    return flowM3s / area;
+  }
+  function headLossHW(flowLs, idMm, C, lengthM = 100) {
+    const Q = flowLs / 1e3;
+    const D = idMm / 1e3;
+    return 10.67 * lengthM * Math.pow(Q, 1.852) / (Math.pow(C, 1.852) * Math.pow(D, 4.8704));
+  }
+  function pressureLossKPa(headLossM) {
+    return headLossM * 9.81;
+  }
+  function isIneligibleAbbr(abbr) {
+    const a = (abbr || "").toString().toUpperCase();
+    return a.startsWith("WC") || a.startsWith("UR");
+  }
+  function computeTotalFU(fixtureInstances, fixtureCatalogById, waterSystemChoice) {
+    let sum = 0;
+    const missing = [];
+    for (const inst of fixtureInstances) {
+      if (inst.kind === "custom") {
+        if (inst.custom.inputMode !== "FU") continue;
+        const raw2 = waterSystemChoice === "Cold Water" ? inst.custom.fuCold : inst.custom.fuHot;
+        if (raw2 === null || raw2 === void 0 || !Number.isFinite(raw2)) {
+          missing.push(inst.instanceId);
+          continue;
+        }
+        sum += raw2 * (inst.qty || 0);
+        continue;
+      }
+      const fx = fixtureCatalogById[inst.refFixtureId];
+      if (!fx) continue;
+      let raw;
+      if (waterSystemChoice === "Cold Water") raw = fx.fuCold;
+      else if (isIneligibleAbbr(fx.abbr)) raw = 0;
+      else raw = fx.fuHot;
+      if (raw === null || raw === void 0) {
+        missing.push(inst.instanceId);
+        continue;
+      }
+      sum += raw * (inst.qty || 0);
+    }
+    return { total: missing.length > 0 ? null : sum, missing };
+  }
+  function computeDirectFlowContribution(fixtureInstances, waterSystemChoice) {
+    let sum = 0;
+    for (const inst of fixtureInstances) {
+      if (inst.kind !== "custom" || inst.custom.inputMode !== "FLOW") continue;
+      const raw = waterSystemChoice === "Cold Water" ? inst.custom.flowCold : inst.custom.flowHot;
+      if (raw === null || raw === void 0 || !Number.isFinite(raw)) continue;
+      sum += raw * (inst.qty || 0);
+    }
+    return sum;
+  }
+  function computePipeResult(refPack, standardId, buildingTypeForVelocity, pipeSizingSettings, waterSystemChoice, designFlow) {
+    if (designFlow == null) return { na: true };
+    const vs = waterSystemChoice === "Cold Water" ? "CW" : waterSystemChoice === "Hot Water" ? "HW" : null;
+    if (!vs) return { na: true };
+    const velCriteria = refPack.velocityCriteria.find((v) => v.standardId === standardId && v.building === buildingTypeForVelocity && v.system === vs);
+    const { material, velocityMode, manualVelocity } = pipeSizingSettings;
+    if (velocityMode === "Auto" && !velCriteria) return { noCriteria: true };
+    if (velocityMode === "Manual") {
+      const mv = Number(manualVelocity);
+      if (manualVelocity === "" || manualVelocity === null || manualVelocity === void 0 || !Number.isFinite(mv) || mv <= 0) return { invalidManualVelocity: true };
+    }
+    const materialInfo = refPack.materials.find((m) => m.material === material);
+    if (!materialInfo) return { na: true };
+    const sizes = refPack.pipeSizes.filter((p) => p.material === material).sort((a, b) => a.od - b.od);
+    const limit = velocityMode === "Auto" ? velCriteria.recommended : Number(manualVelocity);
+    let chosen = null;
+    for (const p of sizes) {
+      const v = velocityMs(designFlow, p.id);
+      if (v <= limit) {
+        chosen = { ...p, velocity: v };
+        break;
+      }
+    }
+    if (!chosen && sizes.length > 0) {
+      const last = sizes[sizes.length - 1];
+      chosen = { ...last, velocity: velocityMs(designFlow, last.id) };
+    }
+    if (!chosen) return { notFound: true };
+    const hf = headLossHW(designFlow, chosen.id, materialInfo.c, 100);
+    const pLoss = pressureLossKPa(hf);
+    let status = null;
+    if (velCriteria) {
+      status = "PASS";
+      if (chosen.velocity > velCriteria.maximum) status = "FAIL";
+      else if (chosen.velocity > velCriteria.recommended) status = "WARNING";
+    }
+    return { dn: chosen.dn, od: chosen.od, id: chosen.id, velocity: chosen.velocity, headLoss: hf, pressureLoss: pLoss, status, velCriteria };
+  }
+  function calcWaterSystem(fixtureInstances, refPack, standardId, flushingType, buildingTypeForVelocity, pipeSizingSettings, waterSystemChoice, fixtureCatalogById) {
+    const { total, missing } = computeTotalFU(fixtureInstances, fixtureCatalogById, waterSystemChoice);
+    const directFlow = computeDirectFlowContribution(fixtureInstances, waterSystemChoice);
+    let designFlow = null;
+    if (total != null) {
+      const fuBasedFlow = interpolate(refPack.fu2flowTable, standardId, flushingType, total);
+      designFlow = fuBasedFlow == null ? null : fuBasedFlow + directFlow;
+    }
+    const pipeSizing = computePipeResult(refPack, standardId, buildingTypeForVelocity, pipeSizingSettings, waterSystemChoice, designFlow);
+    return { totalFU: total, missingFuKeys: missing, directFlowContribution: directFlow, designFlow, pipeSizing };
+  }
+  function resolveCumulativeFixtures(level, allLevelsInSystemGroup) {
+    let included;
+    if (level.cumulativeSource.mode === "auto") included = allLevelsInSystemGroup.filter((l) => l.order <= level.order);
+    else {
+      const idSet = new Set(level.cumulativeSource.levelIds);
+      included = allLevelsInSystemGroup.filter((l) => idSet.has(l.levelId));
+    }
+    return included.flatMap((l) => l.fixtureInstances);
+  }
+  function calculateProject(project, refPack) {
+    const fixtureCatalogById = {};
+    for (const fx of refPack.fixtureCatalog) fixtureCatalogById[fx.fixtureId] = fx;
+    const perLevelOwn = {}, perLevelCumulative = {};
+    for (const sg of project.systemGroups) {
+      perLevelOwn[sg.systemGroupId] = {};
+      perLevelCumulative[sg.systemGroupId] = {};
+      const { flushingType } = sg.designBasis;
+      const { buildingTypeForVelocity } = sg.pipeSizingSettings;
+      for (const lvl of sg.levels) {
+        const CW = calcWaterSystem(lvl.fixtureInstances, refPack, project.standardId, flushingType, buildingTypeForVelocity, sg.pipeSizingSettings, "Cold Water", fixtureCatalogById);
+        const HW = calcWaterSystem(lvl.fixtureInstances, refPack, project.standardId, flushingType, buildingTypeForVelocity, sg.pipeSizingSettings, "Hot Water", fixtureCatalogById);
+        perLevelOwn[sg.systemGroupId][lvl.levelId] = { CW, HW };
+      }
+      for (const lvl of sg.levels) {
+        const resolved = resolveCumulativeFixtures(lvl, sg.levels);
+        const CW = calcWaterSystem(resolved, refPack, project.standardId, flushingType, buildingTypeForVelocity, sg.pipeSizingSettings, "Cold Water", fixtureCatalogById);
+        const HW = calcWaterSystem(resolved, refPack, project.standardId, flushingType, buildingTypeForVelocity, sg.pipeSizingSettings, "Hot Water", fixtureCatalogById);
+        perLevelCumulative[sg.systemGroupId][lvl.levelId] = { CW, HW };
+      }
+    }
+    return { perLevelOwn, perLevelCumulative };
+  }
+  var uidCounter = 1;
+  function uid(prefix) {
+    uidCounter += 1;
+    return `${prefix}_${Date.now().toString(36)}_${uidCounter}`;
+  }
+  function fmt(n, d = 2) {
+    if (n === null || n === void 0 || Number.isNaN(n)) return "\u2014";
+    return Number(n).toFixed(d);
+  }
+  function makeEmptyLevel(order) {
+    return { levelId: uid("lvl"), name: `Level ${order}`, order, cumulativeSource: { mode: "auto" }, fixtureInstances: [] };
+  }
+  function makeEmptySystemGroup(index, standardId, refPack) {
+    const std = refPack.standards.find((s) => s.standardId === standardId);
+    return {
+      systemGroupId: uid("sg"),
+      name: `SystemGroup ${index}`,
+      designBasis: { buildingType: "Residential", systemTypeFilter: null, flushingType: "Flush tank" },
+      pipeSizingSettings: { material: "PPR", velocityMode: "Auto", manualVelocity: "", buildingTypeForVelocity: "Residential" },
+      levels: [makeEmptyLevel(1)]
+    };
+  }
+  function cloneSystemGroupFrom(source, index) {
+    const idMap = {};
+    source.levels.forEach((l) => {
+      idMap[l.levelId] = uid("lvl");
+    });
+    const levels = source.levels.map((lvl) => ({
+      levelId: idMap[lvl.levelId],
+      name: lvl.name,
+      order: lvl.order,
+      cumulativeSource: lvl.cumulativeSource.mode === "auto" ? { mode: "auto" } : { mode: "custom", levelIds: lvl.cumulativeSource.levelIds.map((id) => idMap[id]).filter(Boolean) },
+      fixtureInstances: lvl.fixtureInstances.map((fi) => ({ ...fi, instanceId: uid("fi"), custom: fi.custom ? { ...fi.custom } : null }))
+    }));
+    return {
+      systemGroupId: uid("sg"),
+      name: `SystemGroup ${index}`,
+      designBasis: { ...source.designBasis },
+      pipeSizingSettings: { ...source.pipeSizingSettings },
+      levels
+    };
+  }
+  function makeEmptyProject(refPack, name) {
+    const sg1 = makeEmptySystemGroup(1, "std_qcvn", refPack);
+    return {
+      projectId: uid("proj"),
+      name: name && name.trim() ? name.trim() : "New Project",
+      metadata: { company: "", preparedBy: "", checkedBy: "", issuedDate: "", notes: "" },
+      referenceDataPackVersion: refPack.packVersion,
+      standardId: "std_qcvn",
+      systemGroups: [sg1]
+    };
+  }
+  function remapProjectToStandard(project, refPack, newStandardId) {
+    const byId = {};
+    for (const fx of refPack.fixtureCatalog) byId[fx.fixtureId] = fx;
+    const newCatalog = refPack.fixtureCatalog.filter((f) => f.standardId === newStandardId);
+    const findMatch = (name, abbr) => newCatalog.find((f) => f.name === name && f.abbr === abbr);
+    const systemGroups = project.systemGroups.map((sg) => ({
+      ...sg,
+      levels: sg.levels.map((lvl) => ({
+        ...lvl,
+        fixtureInstances: lvl.fixtureInstances.map((inst) => {
+          if (inst.kind !== "database") return inst;
+          const old = byId[inst.refFixtureId];
+          if (!old) return inst;
+          const match = findMatch(old.name, old.abbr);
+          return match ? { ...inst, refFixtureId: match.fixtureId } : inst;
+        })
+      }))
+    }));
+    return { ...project, standardId: newStandardId, systemGroups };
+  }
+  function projectReducer(state, action) {
+    const { project, refPack } = state;
+    const updateSG = (sgId, fn) => ({
+      ...project,
+      systemGroups: project.systemGroups.map((sg) => sg.systemGroupId === sgId ? fn(sg) : sg)
+    });
+    const updateLevel = (sgId, levelId, fn) => updateSG(sgId, (sg) => ({ ...sg, levels: sg.levels.map((lvl) => lvl.levelId === levelId ? fn(lvl) : lvl) }));
+    switch (action.type) {
+      case "LOAD_PROJECT":
+        return { ...state, project: action.project };
+      case "NEW_PROJECT":
+        return { ...state, project: makeEmptyProject(refPack, action.name) };
+      case "SET_NAME":
+        return { ...state, project: { ...project, name: action.name } };
+      case "SET_METADATA_FIELD":
+        return { ...state, project: { ...project, metadata: { ...project.metadata, [action.field]: action.value } } };
+      case "SET_STANDARD":
+        return { ...state, project: remapProjectToStandard(project, refPack, action.standardId) };
+      case "ADD_SYSTEM_GROUP": {
+        const idx = project.systemGroups.length + 1;
+        let newSg;
+        if (action.sourceSgId) {
+          const source = project.systemGroups.find((sg) => sg.systemGroupId === action.sourceSgId);
+          newSg = source ? cloneSystemGroupFrom(source, idx) : makeEmptySystemGroup(idx, project.standardId, refPack);
+        } else {
+          newSg = makeEmptySystemGroup(idx, project.standardId, refPack);
+        }
+        return { ...state, project: { ...project, systemGroups: [...project.systemGroups, newSg] } };
+      }
+      case "REMOVE_SYSTEM_GROUP":
+        return { ...state, project: { ...project, systemGroups: project.systemGroups.filter((sg) => sg.systemGroupId !== action.sgId) } };
+      case "RENAME_SYSTEM_GROUP":
+        return { ...state, project: updateSG(action.sgId, (sg) => ({ ...sg, name: action.name })) };
+      case "SET_DESIGN_BASIS":
+        return { ...state, project: updateSG(action.sgId, (sg) => ({ ...sg, designBasis: { ...sg.designBasis, [action.field]: action.value } })) };
+      case "SET_PIPE_SETTINGS":
+        return { ...state, project: updateSG(action.sgId, (sg) => ({ ...sg, pipeSizingSettings: { ...sg.pipeSizingSettings, [action.field]: action.value } })) };
+      case "ADD_LEVEL":
+        return {
+          ...state,
+          project: updateSG(action.sgId, (sg) => {
+            const nextOrder = sg.levels.length ? Math.max(...sg.levels.map((l) => l.order)) + 1 : 1;
+            const newLevel = makeEmptyLevel(nextOrder);
+            if (action.sourceLevelId) {
+              const source = sg.levels.find((l) => l.levelId === action.sourceLevelId);
+              if (source) {
+                newLevel.fixtureInstances = source.fixtureInstances.map((fi) => ({
+                  ...fi,
+                  instanceId: uid("fi"),
+                  custom: fi.custom ? { ...fi.custom } : null
+                }));
+              }
+            }
+            return { ...sg, levels: [...sg.levels, newLevel] };
+          })
+        };
+      case "REMOVE_LEVEL":
+        return { ...state, project: updateSG(action.sgId, (sg) => ({ ...sg, levels: sg.levels.filter((l) => l.levelId !== action.levelId) })) };
+      case "RENAME_LEVEL":
+        return { ...state, project: updateLevel(action.sgId, action.levelId, (lvl) => ({ ...lvl, name: action.name })) };
+      case "MOVE_LEVEL": {
+        return {
+          ...state,
+          project: updateSG(action.sgId, (sg) => {
+            const levels = [...sg.levels].sort((a2, b2) => a2.order - b2.order);
+            const idx = levels.findIndex((l) => l.levelId === action.levelId);
+            const swapIdx = action.direction === "up" ? idx - 1 : idx + 1;
+            if (swapIdx < 0 || swapIdx >= levels.length) return sg;
+            const a = levels[idx], b = levels[swapIdx];
+            const newLevels = sg.levels.map((l) => {
+              if (l.levelId === a.levelId) return { ...l, order: b.order };
+              if (l.levelId === b.levelId) return { ...l, order: a.order };
+              return l;
+            });
+            return { ...sg, levels: newLevels };
+          })
+        };
+      }
+      case "SET_CUMULATIVE_SOURCE":
+        return { ...state, project: updateLevel(action.sgId, action.levelId, (lvl) => ({ ...lvl, cumulativeSource: action.source })) };
+      case "ADD_DB_FIXTURE":
+        return {
+          ...state,
+          project: updateLevel(action.sgId, action.levelId, (lvl) => ({
+            ...lvl,
+            fixtureInstances: [...lvl.fixtureInstances, { instanceId: uid("fi"), kind: "database", qty: 1, refFixtureId: action.refFixtureId, custom: null }]
+          }))
+        };
+      case "ADD_CUSTOM_FIXTURE":
+        return {
+          ...state,
+          project: updateLevel(action.sgId, action.levelId, (lvl) => ({
+            ...lvl,
+            fixtureInstances: [...lvl.fixtureInstances, { instanceId: uid("fi"), kind: "custom", qty: action.qty, refFixtureId: null, custom: action.custom }]
+          }))
+        };
+      case "UPDATE_FIXTURE_QTY":
+        return {
+          ...state,
+          project: updateLevel(action.sgId, action.levelId, (lvl) => ({
+            ...lvl,
+            fixtureInstances: lvl.fixtureInstances.map((fi) => fi.instanceId === action.instanceId ? { ...fi, qty: action.qty } : fi)
+          }))
+        };
+      case "UPDATE_CUSTOM_FIXTURE":
+        return {
+          ...state,
+          project: updateLevel(action.sgId, action.levelId, (lvl) => ({
+            ...lvl,
+            fixtureInstances: lvl.fixtureInstances.map(
+              (fi) => fi.instanceId === action.instanceId ? { ...fi, custom: { ...fi.custom, ...action.patch } } : fi
+            )
+          }))
+        };
+      case "REMOVE_FIXTURE":
+        return {
+          ...state,
+          project: updateLevel(action.sgId, action.levelId, (lvl) => ({
+            ...lvl,
+            fixtureInstances: lvl.fixtureInstances.filter((fi) => fi.instanceId !== action.instanceId)
+          }))
+        };
+      default:
+        return state;
+    }
+  }
+  var NA = "N/A";
+  var xlFmtNum = (v, d = 2) => v === null || v === void 0 || Number.isNaN(v) ? NA : Number(v).toFixed(d);
+  var xlDnNumber = (dn) => {
+    if (!dn) return null;
+    const m = String(dn).match(/\d+(\.\d+)?/);
+    return m ? Number(m[0]) : null;
+  };
+  function xlPipeCells(p) {
+    if (!p || p.na || p.noCriteria || p.notFound || p.invalidManualVelocity) return [NA, NA, NA, NA, NA, NA];
+    return [xlDnNumber(p.dn) ?? NA, p.od ?? NA, p.id ?? NA, xlFmtNum(p.velocity, 2), xlFmtNum(p.headLoss, 2), xlFmtNum(p.pressureLoss, 1)];
+  }
+  var FIXTURE_COLS = 13;
+  function xlBoldRow(ws, rowIdx) {
+    for (let c = 0; c < FIXTURE_COLS; c++) {
+      const addr = XLSX.utils.encode_cell({ r: rowIdx, c });
+      if (ws[addr]) ws[addr].s = { font: { name: "Calibri", sz: 12, bold: true } };
+    }
+  }
+  function xlBoldItalicRow(ws, rowIdx) {
+    for (let c = 0; c < FIXTURE_COLS; c++) {
+      const addr = XLSX.utils.encode_cell({ r: rowIdx, c });
+      if (ws[addr]) ws[addr].s = { font: { name: "Calibri", sz: 12, bold: true, italic: true } };
+    }
+  }
+  function usedDbFixturesProject(project, refPack) {
+    const ids = /* @__PURE__ */ new Set();
+    for (const sg of project.systemGroups) for (const lvl of sg.levels) for (const inst of lvl.fixtureInstances) {
+      if (inst.kind === "database" && inst.refFixtureId) ids.add(inst.refFixtureId);
+    }
+    return refPack.fixtureCatalog.filter((f) => ids.has(f.fixtureId));
+  }
+  function usedCustomFixturesProject(project) {
+    const seen = /* @__PURE__ */ new Map();
+    for (const sg of project.systemGroups) for (const lvl of sg.levels) for (const inst of lvl.fixtureInstances) {
+      if (inst.kind !== "custom") continue;
+      const key = JSON.stringify(inst.custom);
+      if (!seen.has(key)) seen.set(key, inst.custom);
+    }
+    return Array.from(seen.values());
+  }
+  function buildSettingsSheet(project, refPack) {
+    const standardName = refPack.standards.find((s) => s.standardId === project.standardId)?.displayName ?? NA;
+    const aoa = [];
+    const boldRows = [];
+    aoa.push([project.metadata.company || "<Company Name>", ""]);
+    boldRows.push(aoa.length - 1);
+    aoa.push([project.name, ""]);
+    boldRows.push(aoa.length - 1);
+    aoa.push(["Issued Date", project.metadata.issuedDate || (/* @__PURE__ */ new Date()).toLocaleString()]);
+    aoa.push(["Prepared by", project.metadata.preparedBy || ""]);
+    aoa.push(["Checked By", project.metadata.checkedBy || ""]);
+    aoa.push(["Design Standard (whole Project)", standardName]);
+    aoa.push([]);
+    aoa.push(["System Groups Overview"]);
+    boldRows.push(aoa.length - 1);
+    aoa.push(["System Group", "Building Type", "Flushing Type", "System Type", "Material", "Velocity Mode", "Velocity Setting"]);
+    boldRows.push(aoa.length - 1);
+    for (const sg of project.systemGroups) {
+      const velocitySetting = sg.pipeSizingSettings.velocityMode === "Manual" ? `Manual: ${sg.pipeSizingSettings.manualVelocity ?? NA} m/s` : `Building: ${sg.pipeSizingSettings.buildingTypeForVelocity ?? NA}`;
+      aoa.push([
+        sg.name,
+        sg.designBasis.buildingType ?? NA,
+        sg.designBasis.flushingType ?? NA,
+        sg.designBasis.systemTypeFilter || "",
+        sg.pipeSizingSettings.material ?? NA,
+        sg.pipeSizingSettings.velocityMode ?? NA,
+        velocitySetting
+      ]);
+    }
+    aoa.push([]);
+    aoa.push(["Fixture Database \u2014 FU values for fixtures assigned anywhere in this Project"]);
+    boldRows.push(aoa.length - 1);
+    aoa.push(["Fixture", "Abbreviation", "System Type", "FU Cold", "FU Hot", "FU Total"]);
+    boldRows.push(aoa.length - 1);
+    const dbFixtures = usedDbFixturesProject(project, refPack);
+    if (dbFixtures.length === 0) aoa.push(["(no database fixtures assigned)", "", "", "", "", ""]);
+    for (const fx of dbFixtures) {
+      aoa.push([fx.name, fx.abbr, fx.systemType ?? "", fx.fuCold ?? NA, fx.fuHot ?? NA, fx.fuTotal ?? NA]);
+    }
+    aoa.push([]);
+    aoa.push(["Custom Fixtures declared anywhere in this Project"]);
+    boldRows.push(aoa.length - 1);
+    aoa.push(["Name", "Abbreviation", "Input Mode", "FU Cold", "FU Hot", "Flow Cold (L/s)", "Flow Hot (L/s)"]);
+    boldRows.push(aoa.length - 1);
+    const customFx = usedCustomFixturesProject(project);
+    if (customFx.length === 0) aoa.push(["(no custom fixtures declared)", "", "", "", "", "", ""]);
+    for (const c of customFx) {
+      aoa.push([c.name, c.abbr, c.inputMode, c.fuCold ?? NA, c.fuHot ?? NA, c.flowCold ?? NA, c.flowHot ?? NA]);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = [{ wch: 40 }, { wch: 14 }, { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 16 }, { wch: 16 }];
+    boldRows.forEach((r) => xlBoldRow(ws, r));
+    return ws;
+  }
+  function buildLevelSheet(sg, lvl, calc, refPack) {
+    const aoa = [];
+    const boldRows = [];
+    const boldItalicRows = [];
+    aoa.push([`Level: ${lvl.name} (order=${lvl.order})`]);
+    boldRows.push(aoa.length - 1);
+    aoa.push([]);
+    aoa.push(["Fixture", "Abbreviation", "Quantity", "FU Cold water", "FU Hot water", "Total FU Cold", "Total FU Hot", "DN", "OD", "ID", "Velocity (m/s)", "Head Loss / 100m (m)", "Pressure Loss / 100m (kPa)"]);
+    boldRows.push(aoa.length - 1);
+    for (const inst of lvl.fixtureInstances) {
+      const qty = inst.qty || 0;
+      if (inst.kind === "custom") {
+        const c = inst.custom;
+        const label = c.name + (c.abbr ? ` (${c.abbr})` : "") + " [Custom]";
+        if (c.inputMode === "FU") {
+          aoa.push([
+            label,
+            c.abbr,
+            qty,
+            c.fuCold == null ? NA : c.fuCold,
+            c.fuHot == null ? NA : c.fuHot,
+            c.fuCold == null ? NA : c.fuCold * qty,
+            c.fuHot == null ? NA : c.fuHot * qty,
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]);
+        } else {
+          aoa.push([label, c.abbr, qty, NA, NA, NA, NA, "", "", "", "", "", ""]);
+        }
+        continue;
+      }
+      const fx = refPack.fixtureCatalog.find((f) => f.fixtureId === inst.refFixtureId);
+      if (!fx) {
+        aoa.push([inst.refFixtureId ?? "(unresolved)", NA, qty, NA, NA, NA, NA, "", "", "", "", "", ""]);
+        continue;
+      }
+      aoa.push([
+        fx.name,
+        fx.abbr,
+        qty,
+        fx.fuCold == null ? NA : fx.fuCold,
+        fx.fuHot == null ? NA : fx.fuHot,
+        fx.fuCold == null ? NA : fx.fuCold * qty,
+        fx.fuHot == null ? NA : fx.fuHot * qty,
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]);
+    }
+    aoa.push([]);
+    const own = calc.perLevelOwn[sg.systemGroupId][lvl.levelId];
+    aoa.push(["Total FU (Current Floor Only)", "", "", "", "", own.CW.totalFU == null ? NA : own.CW.totalFU, own.HW.totalFU == null ? NA : own.HW.totalFU, ...xlPipeCells(own.CW.pipeSizing)]);
+    boldItalicRows.push(aoa.length - 1);
+    aoa.push(["Design Flow (Current Floor Only) (l/s)", "", "", "", "", own.CW.designFlow == null ? NA : xlFmtNum(own.CW.designFlow, 3), own.HW.designFlow == null ? NA : xlFmtNum(own.HW.designFlow, 3), ...xlPipeCells(own.HW.pipeSizing)]);
+    boldItalicRows.push(aoa.length - 1);
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = [
+      { wch: 34 },
+      { wch: 13 },
+      { wch: 10 },
+      { wch: 13 },
+      { wch: 11 },
+      { wch: 12 },
+      { wch: 12 },
+      { wch: 7 },
+      { wch: 7 },
+      { wch: 7 },
+      { wch: 14 },
+      { wch: 16 },
+      { wch: 18 }
+    ];
+    boldRows.forEach((r) => xlBoldRow(ws, r));
+    boldItalicRows.forEach((r) => xlBoldItalicRow(ws, r));
+    return ws;
+  }
+  function buildSummarySheet(project, calc) {
+    const aoa = [];
+    const boldRows = [];
+    const headerCols = [
+      "Level",
+      "CW Total FU",
+      "CW Design Flow (l/s)",
+      "CW DN",
+      "CW OD",
+      "CW ID",
+      "CW Velocity (m/s)",
+      "CW Head Loss/100m (m)",
+      "CW Pressure Loss/100m (kPa)",
+      "CW Status",
+      "HW Total FU",
+      "HW Design Flow (l/s)",
+      "HW DN",
+      "HW OD",
+      "HW ID",
+      "HW Velocity (m/s)",
+      "HW Head Loss/100m (m)",
+      "HW Pressure Loss/100m (kPa)",
+      "HW Status"
+    ];
+    aoa.push(["Cumulative Summary \u2014 All SystemGroups"]);
+    boldRows.push(aoa.length - 1);
+    for (const sg of project.systemGroups) {
+      aoa.push([]);
+      aoa.push([`System Group: ${sg.name}`]);
+      boldRows.push(aoa.length - 1);
+      aoa.push(headerCols);
+      boldRows.push(aoa.length - 1);
+      const sortedLevels = [...sg.levels].sort((a, b) => a.order - b.order);
+      for (const lvl of sortedLevels) {
+        const r = calc.perLevelCumulative[sg.systemGroupId][lvl.levelId];
+        aoa.push([
+          lvl.name,
+          r.CW.totalFU == null ? NA : r.CW.totalFU,
+          r.CW.designFlow == null ? NA : xlFmtNum(r.CW.designFlow, 3),
+          ...xlPipeCells(r.CW.pipeSizing),
+          r.CW.pipeSizing?.status ?? NA,
+          r.HW.totalFU == null ? NA : r.HW.totalFU,
+          r.HW.designFlow == null ? NA : xlFmtNum(r.HW.designFlow, 3),
+          ...xlPipeCells(r.HW.pipeSizing),
+          r.HW.pipeSizing?.status ?? NA
+        ]);
+      }
+    }
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = [{ wch: 16 }, ...Array(18).fill({ wch: 13 })];
+    boldRows.forEach((r) => xlBoldRow19(ws, r));
+    return ws;
+  }
+  function xlBoldRow19(ws, rowIdx) {
+    for (let c = 0; c < 19; c++) {
+      const addr = XLSX.utils.encode_cell({ r: rowIdx, c });
+      if (ws[addr]) ws[addr].s = { font: { name: "Calibri", sz: 12, bold: true } };
+    }
+  }
+  function sanitizeSheetName(name, used) {
+    let base = (name || "Sheet").replace(/[/\\:*?"<>|[\]]/g, "_").slice(0, 28) || "Sheet";
+    let candidate = base, i = 2;
+    while (used.has(candidate)) {
+      candidate = `${base}_${i}`;
+      i += 1;
+    }
+    used.add(candidate);
+    return candidate;
+  }
+  function exportProjectToExcel(project, calc, refPack) {
+    const wb = XLSX.utils.book_new();
+    const usedNames = /* @__PURE__ */ new Set();
+    const multiSG = project.systemGroups.length > 1;
+    const settingsWs = buildSettingsSheet(project, refPack);
+    XLSX.utils.book_append_sheet(wb, settingsWs, sanitizeSheetName("Settings", usedNames));
+    const summaryWs = buildSummarySheet(project, calc);
+    XLSX.utils.book_append_sheet(wb, summaryWs, sanitizeSheetName("Summary", usedNames));
+    for (const sg of project.systemGroups) {
+      const prefix = multiSG ? `${sg.name} - ` : "";
+      const sortedLevels = [...sg.levels].sort((a2, b) => a2.order - b.order);
+      for (const lvl of sortedLevels) {
+        const lvlWs = buildLevelSheet(sg, lvl, calc, refPack);
+        XLSX.utils.book_append_sheet(wb, lvlWs, sanitizeSheetName(`${prefix}${lvl.name}`, usedNames));
+      }
+    }
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
+    const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = URL.createObjectURL(blob);
+    const now = /* @__PURE__ */ new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}`;
+    const filename = `${project.name}_${stamp}.xlsx`.replace(/[/\\:*?"<>|]/g, "_");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1e3);
+  }
+  var COLORS = {
+    ink: "#1C2B33",
+    steel: "#425563",
+    paper: "#F6F5F1",
+    panel: "#FFFFFF",
+    line: "#DDE2E5",
+    cold: "#1E7F8C",
+    coldBg: "#EAF5F6",
+    hot: "#C25B2E",
+    hotBg: "#FBEEE7",
+    pass: "#2E7D4F",
+    passBg: "#E7F4EC",
+    warn: "#B9832A",
+    warnBg: "#FBF1DF",
+    fail: "#B0332B",
+    failBg: "#FBE9E8"
+  };
+  function StatusBadge({ status }) {
+    if (!status) return /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontSize: 11 } }, "N/A");
+    const map = {
+      PASS: { bg: COLORS.passBg, fg: COLORS.pass },
+      WARNING: { bg: COLORS.warnBg, fg: COLORS.warn },
+      FAIL: { bg: COLORS.failBg, fg: COLORS.fail }
+    };
+    const c = map[status] || map.PASS;
+    return /* @__PURE__ */ React.createElement("span", { style: { background: c.bg, color: c.fg, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 3, letterSpacing: 0.4 } }, status);
+  }
+  function ResultBlock({ label, accent, accentBg, r }) {
+    return /* @__PURE__ */ React.createElement("div", { style: { border: `1px solid ${COLORS.line}`, borderRadius: 6, overflow: "hidden", flex: 1, minWidth: 220 } }, /* @__PURE__ */ React.createElement("div", { style: { background: accentBg, color: accent, fontWeight: 700, fontSize: 12, padding: "6px 10px", letterSpacing: 0.3 } }, label), /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 12px", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 12.5, color: COLORS.ink } }, /* @__PURE__ */ React.createElement(Row, { k: "Total FU", v: r.totalFU == null ? "\u2014 (missing data)" : fmt(r.totalFU, 2) }), /* @__PURE__ */ React.createElement(Row, { k: "Design Flow (L/s)", v: r.designFlow == null ? "\u2014" : fmt(r.designFlow, 3) }), r.pipeSizing && !r.pipeSizing.na && !r.pipeSizing.noCriteria && !r.pipeSizing.notFound && !r.pipeSizing.invalidManualVelocity && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Row, { k: "Selected DN", v: r.pipeSizing.dn }), /* @__PURE__ */ React.createElement(Row, { k: "Velocity (m/s)", v: fmt(r.pipeSizing.velocity, 2) }), /* @__PURE__ */ React.createElement(Row, { k: "Head Loss (/100m)", v: fmt(r.pipeSizing.headLoss, 2) + " m" }), /* @__PURE__ */ React.createElement(Row, { k: "Pressure Loss (/100m)", v: fmt(r.pipeSizing.pressureLoss, 1) + " kPa" }), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 4 } }, /* @__PURE__ */ React.createElement(StatusBadge, { status: r.pipeSizing.status }))), r.pipeSizing && r.pipeSizing.na && /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.steel } }, "Not enough data to calculate Pipe Sizing (N/A)"), r.pipeSizing && r.pipeSizing.noCriteria && /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.warn } }, "Missing Velocity Criteria for this Standard/Building (Auto mode)"), r.pipeSizing && r.pipeSizing.invalidManualVelocity && /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.warn } }, "Invalid Manual velocity"), r.pipeSizing && r.pipeSizing.notFound && /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.fail } }, "No suitable DN found for the selected Material"), r.missingFuKeys && r.missingFuKeys.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { color: COLORS.fail, marginTop: 4, fontFamily: "ui-sans-serif, system-ui" } }, "\u26A0 ", r.missingFuKeys.length, " fixture(s) missing FU \u2014 Total FU = null")));
+  }
+  function Row({ k, v }) {
+    return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", padding: "2px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontFamily: "ui-sans-serif, system-ui" } }, k), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, v));
+  }
+  function TextInput(props) {
+    return /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        ...props,
+        style: {
+          border: `1px solid ${COLORS.line}`,
+          borderRadius: 4,
+          padding: "5px 8px",
+          fontSize: 12.5,
+          outline: "none",
+          width: "100%",
+          boxSizing: "border-box",
+          ...props.style || {}
+        }
+      }
+    );
+  }
+  function Select(props) {
+    return /* @__PURE__ */ React.createElement(
+      "select",
+      {
+        ...props,
+        style: {
+          border: `1px solid ${COLORS.line}`,
+          borderRadius: 4,
+          padding: "5px 8px",
+          fontSize: 12.5,
+          outline: "none",
+          width: "100%",
+          boxSizing: "border-box",
+          background: "#fff",
+          ...props.style || {}
+        }
+      },
+      props.children
+    );
+  }
+  function Btn({ children, onClick, kind = "default", small, disabled, title }) {
+    const styles = {
+      default: { background: "#fff", color: COLORS.ink, border: `1px solid ${COLORS.line}` },
+      primary: { background: COLORS.ink, color: "#fff", border: `1px solid ${COLORS.ink}` },
+      danger: { background: "#fff", color: COLORS.fail, border: `1px solid ${COLORS.failBg}` },
+      ghost: { background: "transparent", color: COLORS.steel, border: "1px solid transparent" }
+    };
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick,
+        disabled,
+        title,
+        style: {
+          ...styles[kind],
+          borderRadius: 5,
+          padding: small ? "3px 8px" : "6px 12px",
+          fontSize: small ? 11.5 : 12.5,
+          fontWeight: 600,
+          cursor: disabled ? "not-allowed" : "pointer",
+          opacity: disabled ? 0.45 : 1,
+          whiteSpace: "nowrap"
+        }
+      },
+      children
+    );
+  }
+  function PipeDesignNextGen() {
+    const refPack = useMemo(() => buildReferenceDataPack(RAW_DB), []);
+    const [state, dispatch] = useReducer(projectReducer, null, () => ({ project: makeEmptyProject(refPack), refPack }));
+    const { project } = state;
+    const [selectedSgId, setSelectedSgId] = useState(project.systemGroups[0].systemGroupId);
+    const selectedSg = project.systemGroups.find((sg) => sg.systemGroupId === selectedSgId) || project.systemGroups[0];
+    const [selectedLevelId, setSelectedLevelId] = useState(selectedSg.levels[0].levelId);
+    const selectedLevel = selectedSg.levels.find((l) => l.levelId === selectedLevelId) || selectedSg.levels[0];
+    const [pendingStandard, setPendingStandard] = useState(null);
+    const [fixtureSearch, setFixtureSearch] = useState("");
+    const [customForm, setCustomForm] = useState({ name: "", abbr: "", inputMode: "FU", qty: 1, fuCold: "", fuHot: "", flowCold: "", flowHot: "" });
+    const [cumulativePicker, setCumulativePicker] = useState(false);
+    const [addLevelPickerSgId, setAddLevelPickerSgId] = useState(null);
+    const [addLevelSource, setAddLevelSource] = useState("empty");
+    const [addSgPickerOpen, setAddSgPickerOpen] = useState(false);
+    const [addSgSource, setAddSgSource] = useState("empty");
+    const [confirmDeleteSgId, setConfirmDeleteSgId] = useState(null);
+    const [confirmDeleteLevelId, setConfirmDeleteLevelId] = useState(null);
+    const [newProjectPanelOpen, setNewProjectPanelOpen] = useState(false);
+    const [newProjectNameDraft, setNewProjectNameDraft] = useState("New Project");
+    const [loadError, setLoadError] = useState("");
+    const [customFormError, setCustomFormError] = useState("");
+    const fileInputRef = useRef(null);
+    const calc = useMemo(() => calculateProject(project, refPack), [project, refPack]);
+    React.useEffect(() => {
+      if (!project.systemGroups.find((sg) => sg.systemGroupId === selectedSgId)) {
+        setSelectedSgId(project.systemGroups[0]?.systemGroupId);
+      }
+    }, [project.systemGroups]);
+    React.useEffect(() => {
+      if (selectedSg && !selectedSg.levels.find((l) => l.levelId === selectedLevelId)) {
+        setSelectedLevelId(selectedSg.levels[0]?.levelId);
+      }
+    }, [selectedSg]);
+    const standardName = refPack.standards.find((s) => s.standardId === project.standardId)?.displayName;
+    const systemTypesForStandard = Array.from(
+      new Set(refPack.fixtureCatalog.filter((f) => f.standardId === project.standardId && f.systemType != null).map((f) => f.systemType))
+    );
+    const flushingTypes = Array.from(new Set(refPack.fu2flowTable.filter((r) => r.standardId === project.standardId).map((r) => r.type)));
+    const buildings = Array.from(new Set(refPack.velocityCriteria.filter((v) => v.standardId === project.standardId).map((v) => v.building)));
+    const materials = Array.from(new Set(refPack.materials.map((m) => m.material)));
+    const availableDbFixtures = refPack.fixtureCatalog.filter(
+      (f) => f.standardId === project.standardId && (f.systemType === null || f.systemType === selectedSg.designBasis.systemTypeFilter) && (fixtureSearch.trim() === "" || f.name.toLowerCase().includes(fixtureSearch.toLowerCase()) || f.abbr.toLowerCase().includes(fixtureSearch.toLowerCase()))
+    );
+    const sortedLevels = [...selectedSg.levels].sort((a, b) => a.order - b.order);
+    const levelOwn = calc.perLevelOwn[selectedSg.systemGroupId]?.[selectedLevel.levelId];
+    const levelCum = calc.perLevelCumulative[selectedSg.systemGroupId]?.[selectedLevel.levelId];
+    function handleSaveJson() {
+      const blob = new Blob([JSON.stringify(project, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${project.name.replace(/\s+/g, "_")}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    function handleLoadJson(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const loaded = JSON.parse(reader.result);
+          dispatch({ type: "LOAD_PROJECT", project: loaded });
+          setLoadError("");
+        } catch (err) {
+          setLoadError("Invalid JSON file \u2014 could not open this Project.");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    }
+    function submitCustomFixture() {
+      if (!customForm.name.trim()) {
+        setCustomFormError("Custom Fixture name is required.");
+        return;
+      }
+      setCustomFormError("");
+      const toNum = (v) => v === "" ? null : Number(v);
+      const custom = {
+        name: customForm.name.trim(),
+        abbr: customForm.abbr.trim(),
+        inputMode: customForm.inputMode,
+        fuCold: customForm.inputMode === "FU" ? toNum(customForm.fuCold) : null,
+        fuHot: customForm.inputMode === "FU" ? toNum(customForm.fuHot) : null,
+        flowCold: customForm.inputMode === "FLOW" ? toNum(customForm.flowCold) : null,
+        flowHot: customForm.inputMode === "FLOW" ? toNum(customForm.flowHot) : null
+      };
+      dispatch({ type: "ADD_CUSTOM_FIXTURE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, qty: Number(customForm.qty) || 1, custom });
+      setCustomForm({ name: "", abbr: "", inputMode: "FU", qty: 1, fuCold: "", fuHot: "", flowCold: "", flowHot: "" });
+    }
+    return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif", background: COLORS.paper, minHeight: "100%", color: COLORS.ink } }, /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.ink, color: "#fff", padding: "14px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: 1.5, opacity: 0.6, fontWeight: 700 } }, "PIPE DESIGN PROJECT ASSISTANT"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: project.name,
+        onChange: (e) => dispatch({ type: "SET_NAME", name: e.target.value }),
+        style: { background: "transparent", border: "none", color: "#fff", fontSize: 18, fontWeight: 700, outline: "none", padding: "2px 0", width: 260 }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, opacity: 0.7 } }, "Standard (whole Project)"), /* @__PURE__ */ React.createElement(
+      Select,
+      {
+        value: project.standardId,
+        onChange: (e) => setPendingStandard(e.target.value),
+        style: { width: 140 }
+      },
+      refPack.standards.map((s) => /* @__PURE__ */ React.createElement("option", { key: s.standardId, value: s.standardId }, s.displayName))
+    )), /* @__PURE__ */ React.createElement(Btn, { onClick: () => exportProjectToExcel(project, calc, refPack), kind: "primary" }, "\u2B07 Export Excel"), /* @__PURE__ */ React.createElement(Btn, { onClick: handleSaveJson, kind: "default" }, "\u2B07 Save Project (.json)"), /* @__PURE__ */ React.createElement(Btn, { onClick: () => fileInputRef.current?.click(), kind: "default" }, "\u2B06 Open Project"), /* @__PURE__ */ React.createElement("input", { ref: fileInputRef, type: "file", accept: "application/json", style: { display: "none" }, onChange: handleLoadJson }), newProjectPanelOpen ? /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, background: "#2A3B44", padding: "5px 8px", borderRadius: 6 } }, /* @__PURE__ */ React.createElement(
+      TextInput,
+      {
+        autoFocus: true,
+        value: newProjectNameDraft,
+        onChange: (e) => setNewProjectNameDraft(e.target.value),
+        placeholder: "Project name",
+        style: { width: 160 }
+      }
+    ), /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "primary", onClick: () => {
+      dispatch({ type: "NEW_PROJECT", name: newProjectNameDraft });
+      setNewProjectPanelOpen(false);
+      setNewProjectNameDraft("New Project");
+    } }, "Create"), /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "ghost", onClick: () => setNewProjectPanelOpen(false) }, "Cancel")) : /* @__PURE__ */ React.createElement(Btn, { onClick: () => setNewProjectPanelOpen(true), kind: "ghost" }, "+ New Project")), loadError && /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11.5, color: "#FFB3AB", marginTop: 6 } }, loadError), newProjectPanelOpen && /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "#F3C97F", marginTop: 6 } }, "\u26A0 Creating this Project will discard any unsaved changes to the current one.")), pendingStandard && pendingStandard !== project.standardId && /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.warnBg, borderBottom: `1px solid ${COLORS.line}`, padding: "10px 20px", display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12.5, color: COLORS.ink } }, "Changing Standard to ", /* @__PURE__ */ React.createElement("b", null, refPack.standards.find((s) => s.standardId === pendingStandard)?.displayName), " will remap every Database Fixture by identity (name+abbr) across ALL SystemGroups/Levels in the Project. Custom Fixtures are not affected."), /* @__PURE__ */ React.createElement(Btn, { kind: "primary", small: true, onClick: () => {
+      dispatch({ type: "SET_STANDARD", standardId: pendingStandard });
+      setPendingStandard(null);
+    } }, "Confirm"), /* @__PURE__ */ React.createElement(Btn, { kind: "ghost", small: true, onClick: () => setPendingStandard(null) }, "Cancel")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", minHeight: "calc(100vh - 60px)" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 260, borderRight: `1px solid ${COLORS.line}`, background: COLORS.panel, padding: 14, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, fontWeight: 700, color: COLORS.steel, letterSpacing: 0.6, marginBottom: 8 } }, "SYSTEM GROUPS"), project.systemGroups.map((sg) => /* @__PURE__ */ React.createElement("div", { key: sg.systemGroupId, style: { marginBottom: 10 } }, /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        onClick: () => setSelectedSgId(sg.systemGroupId),
+        style: {
+          padding: "7px 9px",
+          borderRadius: 5,
+          cursor: "pointer",
+          fontSize: 12.5,
+          fontWeight: 700,
+          background: sg.systemGroupId === selectedSgId ? COLORS.ink : "transparent",
+          color: sg.systemGroupId === selectedSgId ? "#fff" : COLORS.ink,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }
+      },
+      /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          contentEditable: true,
+          suppressContentEditableWarning: true,
+          onBlur: (e) => dispatch({ type: "RENAME_SYSTEM_GROUP", sgId: sg.systemGroupId, name: e.target.textContent }),
+          style: { outline: "none" }
+        },
+        sg.name
+      ),
+      project.systemGroups.length > 1 && (confirmDeleteSgId === sg.systemGroupId ? /* @__PURE__ */ React.createElement("span", { style: { display: "flex", alignItems: "center", gap: 5, marginLeft: 6 } }, /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            dispatch({ type: "REMOVE_SYSTEM_GROUP", sgId: sg.systemGroupId });
+            setConfirmDeleteSgId(null);
+          },
+          style: { fontSize: 11, fontWeight: 700, color: "#FFB3AB", cursor: "pointer", textDecoration: "underline" },
+          title: "Confirm delete"
+        },
+        "Delete?"
+      ), /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            setConfirmDeleteSgId(null);
+          },
+          style: { fontSize: 11, opacity: 0.7, cursor: "pointer" },
+          title: "Cancel"
+        },
+        "\u2715"
+      )) : /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            setConfirmDeleteSgId(sg.systemGroupId);
+          },
+          style: { opacity: 0.6, fontSize: 12, marginLeft: 6, cursor: "pointer" },
+          title: "Delete this SystemGroup"
+        },
+        "\u2715"
+      ))
+    ), sg.systemGroupId === selectedSgId && /* @__PURE__ */ React.createElement("div", { style: { marginLeft: 10, marginTop: 4, borderLeft: `2px solid ${COLORS.line}`, paddingLeft: 8 } }, [...sg.levels].sort((a, b) => a.order - b.order).map((lvl) => /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: lvl.levelId,
+        onClick: () => setSelectedLevelId(lvl.levelId),
+        style: {
+          padding: "5px 8px",
+          borderRadius: 4,
+          cursor: "pointer",
+          fontSize: 12,
+          marginBottom: 2,
+          background: lvl.levelId === selectedLevelId ? COLORS.coldBg : "transparent",
+          color: lvl.levelId === selectedLevelId ? COLORS.cold : COLORS.steel,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }
+      },
+      /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          contentEditable: true,
+          suppressContentEditableWarning: true,
+          onBlur: (e) => dispatch({ type: "RENAME_LEVEL", sgId: sg.systemGroupId, levelId: lvl.levelId, name: e.target.textContent }),
+          style: { outline: "none" }
+        },
+        lvl.name
+      ),
+      sg.levels.length > 1 && (confirmDeleteLevelId === lvl.levelId ? /* @__PURE__ */ React.createElement("span", { style: { display: "flex", alignItems: "center", gap: 4 } }, /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            dispatch({ type: "REMOVE_LEVEL", sgId: sg.systemGroupId, levelId: lvl.levelId });
+            setConfirmDeleteLevelId(null);
+          },
+          style: { fontSize: 10.5, fontWeight: 700, color: COLORS.fail, cursor: "pointer", textDecoration: "underline" },
+          title: "Confirm delete"
+        },
+        "Delete?"
+      ), /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            setConfirmDeleteLevelId(null);
+          },
+          style: { fontSize: 11, opacity: 0.6, cursor: "pointer" },
+          title: "Cancel"
+        },
+        "\u2715"
+      )) : /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            setConfirmDeleteLevelId(lvl.levelId);
+          },
+          style: { opacity: 0.5, fontSize: 11, cursor: "pointer" },
+          title: "Delete this Level"
+        },
+        "\u2715"
+      ))
+    )), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 4 } }, addLevelPickerSgId === sg.systemGroupId ? /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4, background: COLORS.coldBg, padding: 6, borderRadius: 5 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10.5, fontWeight: 700, color: COLORS.steel } }, "NEW LEVEL DATA SOURCE"), /* @__PURE__ */ React.createElement(Select, { value: addLevelSource, onChange: (e) => setAddLevelSource(e.target.value), style: { fontSize: 11.5, padding: "4px 6px" } }, /* @__PURE__ */ React.createElement("option", { value: "empty" }, "Start empty"), [...sg.levels].sort((a, b) => a.order - b.order).map((l) => /* @__PURE__ */ React.createElement("option", { key: l.levelId, value: l.levelId }, 'Copy fixtures from "', l.name, '"'))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4 } }, /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "primary", onClick: () => {
+      dispatch({ type: "ADD_LEVEL", sgId: sg.systemGroupId, sourceLevelId: addLevelSource === "empty" ? null : addLevelSource });
+      setAddLevelPickerSgId(null);
+      setAddLevelSource("empty");
+    } }, "+ Add"), /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "ghost", onClick: () => {
+      setAddLevelPickerSgId(null);
+      setAddLevelSource("empty");
+    } }, "Cancel"))) : /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "ghost", onClick: () => setAddLevelPickerSgId(sg.systemGroupId) }, "+ Add Level"))))), addSgPickerOpen ? /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4, background: COLORS.coldBg, padding: 8, borderRadius: 5 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10.5, fontWeight: 700, color: COLORS.steel } }, "NEW SYSTEMGROUP DATA SOURCE"), /* @__PURE__ */ React.createElement(Select, { value: addSgSource, onChange: (e) => setAddSgSource(e.target.value), style: { fontSize: 11.5, padding: "4px 6px" } }, /* @__PURE__ */ React.createElement("option", { value: "empty" }, "Start empty"), project.systemGroups.map((sg) => /* @__PURE__ */ React.createElement("option", { key: sg.systemGroupId, value: sg.systemGroupId }, 'Copy from "', sg.name, '"'))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4 } }, /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "primary", onClick: () => {
+      dispatch({ type: "ADD_SYSTEM_GROUP", sourceSgId: addSgSource === "empty" ? null : addSgSource });
+      setAddSgPickerOpen(false);
+      setAddSgSource("empty");
+    } }, "+ Add"), /* @__PURE__ */ React.createElement(Btn, { small: true, kind: "ghost", onClick: () => {
+      setAddSgPickerOpen(false);
+      setAddSgSource("empty");
+    } }, "Cancel"))) : /* @__PURE__ */ React.createElement(Btn, { kind: "default", small: true, onClick: () => setAddSgPickerOpen(true) }, "+ Add SystemGroup")), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, padding: 20, overflow: "auto" } }, /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 8, padding: 16, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700, marginBottom: 10 } }, selectedSg.name, " \u2014 Design Basis & Pipe Sizing Settings"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10 } }, /* @__PURE__ */ React.createElement(Field, { label: "Building Type (Design Basis)" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.designBasis.buildingType, onChange: (e) => dispatch({ type: "SET_DESIGN_BASIS", sgId: selectedSg.systemGroupId, field: "buildingType", value: e.target.value }) }, buildings.map((b) => /* @__PURE__ */ React.createElement("option", { key: b, value: b }, b)))), systemTypesForStandard.length > 0 && /* @__PURE__ */ React.createElement(Field, { label: "System Type" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.designBasis.systemTypeFilter || "", onChange: (e) => dispatch({ type: "SET_DESIGN_BASIS", sgId: selectedSg.systemGroupId, field: "systemTypeFilter", value: e.target.value || null }) }, /* @__PURE__ */ React.createElement("option", { value: "" }, "\u2014 No filter \u2014"), systemTypesForStandard.map((t) => /* @__PURE__ */ React.createElement("option", { key: t, value: t }, t)))), /* @__PURE__ */ React.createElement(Field, { label: "Flushing Type" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.designBasis.flushingType, onChange: (e) => dispatch({ type: "SET_DESIGN_BASIS", sgId: selectedSg.systemGroupId, field: "flushingType", value: e.target.value }) }, flushingTypes.map((t) => /* @__PURE__ */ React.createElement("option", { key: t, value: t }, t)))), /* @__PURE__ */ React.createElement(Field, { label: "Material" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.pipeSizingSettings.material, onChange: (e) => dispatch({ type: "SET_PIPE_SETTINGS", sgId: selectedSg.systemGroupId, field: "material", value: e.target.value }) }, materials.map((m) => /* @__PURE__ */ React.createElement("option", { key: m, value: m }, m)))), /* @__PURE__ */ React.createElement(Field, { label: "Velocity Mode" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.pipeSizingSettings.velocityMode, onChange: (e) => dispatch({ type: "SET_PIPE_SETTINGS", sgId: selectedSg.systemGroupId, field: "velocityMode", value: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "Auto" }, "Auto"), /* @__PURE__ */ React.createElement("option", { value: "Manual" }, "Manual"))), selectedSg.pipeSizingSettings.velocityMode === "Manual" ? /* @__PURE__ */ React.createElement(Field, { label: "Manual Velocity (m/s)" }, /* @__PURE__ */ React.createElement(
+      TextInput,
+      {
+        type: "number",
+        step: "0.01",
+        value: selectedSg.pipeSizingSettings.manualVelocity,
+        onChange: (e) => dispatch({ type: "SET_PIPE_SETTINGS", sgId: selectedSg.systemGroupId, field: "manualVelocity", value: e.target.value })
+      }
+    )) : /* @__PURE__ */ React.createElement(Field, { label: "Building (for Velocity Criteria)" }, /* @__PURE__ */ React.createElement(Select, { value: selectedSg.pipeSizingSettings.buildingTypeForVelocity, onChange: (e) => dispatch({ type: "SET_PIPE_SETTINGS", sgId: selectedSg.systemGroupId, field: "buildingTypeForVelocity", value: e.target.value }) }, buildings.map((b) => /* @__PURE__ */ React.createElement("option", { key: b, value: b }, b)))))), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 8, padding: 16, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700 } }, selectedLevel.name, " \u2014 Fixture Instances"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement(Btn, { small: true, onClick: () => dispatch({ type: "MOVE_LEVEL", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, direction: "up" }) }, "\u2191 order"), /* @__PURE__ */ React.createElement(Btn, { small: true, onClick: () => dispatch({ type: "MOVE_LEVEL", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, direction: "down" }) }, "\u2193 order"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, color: COLORS.steel, alignSelf: "center" } }, "order = ", selectedLevel.order))), /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 12.5, marginBottom: 12 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", { style: { textAlign: "left", color: COLORS.steel, borderBottom: `1px solid ${COLORS.line}` } }, /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "Kind"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "Name"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "Abbr"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px", width: 70 } }, "Qty"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "FU/Flow (C/H)"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px", width: 40 } }))), /* @__PURE__ */ React.createElement("tbody", null, selectedLevel.fixtureInstances.length === 0 && /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { colSpan: 6, style: { padding: "10px 6px", color: COLORS.steel, fontStyle: "italic" } }, "No fixtures added to this level yet.")), selectedLevel.fixtureInstances.map((inst) => {
+      if (inst.kind === "database") {
+        const fx = refPack.fixtureCatalog.find((f) => f.fixtureId === inst.refFixtureId);
+        return /* @__PURE__ */ React.createElement("tr", { key: inst.instanceId, style: { borderBottom: `1px solid ${COLORS.line}` } }, /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10, background: COLORS.coldBg, color: COLORS.cold, padding: "1px 6px", borderRadius: 3, fontWeight: 700 } }, "DB")), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, fx ? fx.name : /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.fail } }, "Not found in current Standard")), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px", fontFamily: "ui-monospace, monospace" } }, fx?.abbr), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(
+          TextInput,
+          {
+            type: "number",
+            min: "0",
+            step: "1",
+            value: inst.qty,
+            onChange: (e) => dispatch({ type: "UPDATE_FIXTURE_QTY", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, instanceId: inst.instanceId, qty: Number(e.target.value) || 0 })
+          }
+        )), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px", fontFamily: "ui-monospace, monospace", color: COLORS.steel } }, fx ? `${fx.fuCold ?? "\u2014"} / ${fx.fuHot ?? "\u2014"}` : "\u2014"), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(Btn, { kind: "ghost", small: true, onClick: () => dispatch({ type: "REMOVE_FIXTURE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, instanceId: inst.instanceId }) }, "\u2715")));
+      }
+      const c = inst.custom;
+      return /* @__PURE__ */ React.createElement("tr", { key: inst.instanceId, style: { borderBottom: `1px solid ${COLORS.line}` } }, /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10, background: COLORS.hotBg, color: COLORS.hot, padding: "1px 6px", borderRadius: 3, fontWeight: 700 } }, "CUSTOM")), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, c.name), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px", fontFamily: "ui-monospace, monospace" } }, c.abbr), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(
+        TextInput,
+        {
+          type: "number",
+          min: "0",
+          step: "1",
+          value: inst.qty,
+          onChange: (e) => dispatch({ type: "UPDATE_FIXTURE_QTY", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, instanceId: inst.instanceId, qty: Number(e.target.value) || 0 })
+        }
+      )), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px", fontFamily: "ui-monospace, monospace", color: COLORS.steel } }, c.inputMode === "FU" ? `FU ${c.fuCold ?? "\u2014"} / ${c.fuHot ?? "\u2014"}` : `L/s ${c.flowCold ?? "\u2014"} / ${c.flowHot ?? "\u2014"}`), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(Btn, { kind: "ghost", small: true, onClick: () => dispatch({ type: "REMOVE_FIXTURE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, instanceId: inst.instanceId }) }, "\u2715")));
+    }))), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11.5, fontWeight: 700, color: COLORS.steel, marginBottom: 6 } }, "ADD FROM FIXTURE DATABASE (", standardName, ")"), /* @__PURE__ */ React.createElement(TextInput, { placeholder: "Search by name or abbr\u2026", value: fixtureSearch, onChange: (e) => setFixtureSearch(e.target.value), style: { marginBottom: 6 } }), /* @__PURE__ */ React.createElement("div", { style: { maxHeight: 130, overflow: "auto", border: `1px solid ${COLORS.line}`, borderRadius: 5 } }, availableDbFixtures.map((f) => /* @__PURE__ */ React.createElement("div", { key: f.fixtureId, style: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 8px", borderBottom: `1px solid ${COLORS.line}`, fontSize: 12 } }, /* @__PURE__ */ React.createElement("span", null, f.name, " ", /* @__PURE__ */ React.createElement("span", { style: { color: COLORS.steel, fontFamily: "ui-monospace, monospace" } }, "(", f.abbr, ")")), /* @__PURE__ */ React.createElement(Btn, { small: true, onClick: () => dispatch({ type: "ADD_DB_FIXTURE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, refFixtureId: f.fixtureId }) }, "+ Add"))), availableDbFixtures.length === 0 && /* @__PURE__ */ React.createElement("div", { style: { padding: 8, fontSize: 12, color: COLORS.steel } }, "No results."))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11.5, fontWeight: 700, color: COLORS.steel, marginBottom: 6 } }, "ADD CUSTOM FIXTURE"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 8, marginBottom: 8 } }, /* @__PURE__ */ React.createElement(TextInput, { placeholder: "Name", value: customForm.name, onChange: (e) => setCustomForm({ ...customForm, name: e.target.value }) }), /* @__PURE__ */ React.createElement(TextInput, { placeholder: "Abbr", value: customForm.abbr, onChange: (e) => setCustomForm({ ...customForm, abbr: e.target.value }) }), /* @__PURE__ */ React.createElement(TextInput, { type: "number", placeholder: "Qty", value: customForm.qty, onChange: (e) => setCustomForm({ ...customForm, qty: e.target.value }) }), /* @__PURE__ */ React.createElement(Select, { value: customForm.inputMode, onChange: (e) => setCustomForm({ ...customForm, inputMode: e.target.value }) }, /* @__PURE__ */ React.createElement("option", { value: "FU" }, "Input Mode: FU"), /* @__PURE__ */ React.createElement("option", { value: "FLOW" }, "Input Mode: FLOW")), customForm.inputMode === "FU" ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(TextInput, { type: "number", step: "0.1", placeholder: "FU Cold", value: customForm.fuCold, onChange: (e) => setCustomForm({ ...customForm, fuCold: e.target.value }) }), /* @__PURE__ */ React.createElement(TextInput, { type: "number", step: "0.1", placeholder: "FU Hot", value: customForm.fuHot, onChange: (e) => setCustomForm({ ...customForm, fuHot: e.target.value }) })) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(TextInput, { type: "number", step: "0.01", placeholder: "Flow Cold (L/s)", value: customForm.flowCold, onChange: (e) => setCustomForm({ ...customForm, flowCold: e.target.value }) }), /* @__PURE__ */ React.createElement(TextInput, { type: "number", step: "0.01", placeholder: "Flow Hot (L/s)", value: customForm.flowHot, onChange: (e) => setCustomForm({ ...customForm, flowHot: e.target.value }) }))), /* @__PURE__ */ React.createElement(Btn, { kind: "primary", small: true, onClick: submitCustomFixture }, "+ Add Custom Fixture"), customFormError && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11.5, color: COLORS.fail, marginLeft: 8 } }, customFormError))), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 8, padding: 16, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700, marginBottom: 8 } }, "Cumulative rule for ", selectedLevel.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("label", { style: { fontSize: 12.5, display: "flex", alignItems: "center", gap: 5 } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "radio",
+        checked: selectedLevel.cumulativeSource.mode === "auto",
+        onChange: () => dispatch({ type: "SET_CUMULATIVE_SOURCE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, source: { mode: "auto" } })
+      }
+    ), "Auto (sum every Level with order \u2264 ", selectedLevel.order, ")"), /* @__PURE__ */ React.createElement("label", { style: { fontSize: 12.5, display: "flex", alignItems: "center", gap: 5 } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "radio",
+        checked: selectedLevel.cumulativeSource.mode === "custom",
+        onChange: () => dispatch({ type: "SET_CUMULATIVE_SOURCE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, source: { mode: "custom", levelIds: selectedLevel.cumulativeSource.levelIds || [selectedLevel.levelId] } })
+      }
+    ), "Custom \u2014 manually select source Levels")), selectedLevel.cumulativeSource.mode === "custom" && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" } }, sortedLevels.map((l) => {
+      const checked = (selectedLevel.cumulativeSource.levelIds || []).includes(l.levelId);
+      return /* @__PURE__ */ React.createElement("label", { key: l.levelId, style: { fontSize: 12, display: "flex", alignItems: "center", gap: 4, background: checked ? COLORS.coldBg : "transparent", padding: "3px 8px", borderRadius: 4 } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked, onChange: () => {
+        const cur = new Set(selectedLevel.cumulativeSource.levelIds || []);
+        checked ? cur.delete(l.levelId) : cur.add(l.levelId);
+        dispatch({ type: "SET_CUMULATIVE_SOURCE", sgId: selectedSg.systemGroupId, levelId: selectedLevel.levelId, source: { mode: "custom", levelIds: Array.from(cur) } });
+      } }), l.name);
+    }))), levelOwn && levelCum && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 30 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700, marginBottom: 8 } }, "Results \u2014 ", selectedLevel.name, " (Current Floor Only)"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 18 } }, /* @__PURE__ */ React.createElement(ResultBlock, { label: "COLD WATER \u2014 Current Floor Only", accent: COLORS.cold, accentBg: COLORS.coldBg, r: levelOwn.CW }), /* @__PURE__ */ React.createElement(ResultBlock, { label: "HOT WATER \u2014 Current Floor Only", accent: COLORS.hot, accentBg: COLORS.hotBg, r: levelOwn.HW })), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700, marginBottom: 8 } }, "Results \u2014 ", selectedLevel.name, " (cumulative, used for riser pipe sizing)"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement(ResultBlock, { label: "COLD WATER \u2014 cumulative", accent: COLORS.cold, accentBg: COLORS.coldBg, r: levelCum.CW }), /* @__PURE__ */ React.createElement(ResultBlock, { label: "HOT WATER \u2014 cumulative", accent: COLORS.hot, accentBg: COLORS.hotBg, r: levelCum.HW }))), /* @__PURE__ */ React.createElement("div", { style: { background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 8, padding: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, fontWeight: 700, marginBottom: 10 } }, "Summary of all Levels in ", selectedSg.name, " (cumulative)"), /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 12 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", { style: { textAlign: "left", color: COLORS.steel, borderBottom: `1px solid ${COLORS.line}` } }, /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "Level"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "CW Total FU"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "CW Flow (L/s)"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "CW DN"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "CW Status"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "HW Total FU"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "HW Flow (L/s)"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "HW DN"), /* @__PURE__ */ React.createElement("th", { style: { padding: "4px 6px" } }, "HW Status"))), /* @__PURE__ */ React.createElement("tbody", null, sortedLevels.map((l) => {
+      const r = calc.perLevelCumulative[selectedSg.systemGroupId][l.levelId];
+      return /* @__PURE__ */ React.createElement("tr", { key: l.levelId, style: { borderBottom: `1px solid ${COLORS.line}`, fontFamily: "ui-monospace, monospace" } }, /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px", fontFamily: "ui-sans-serif, system-ui" } }, l.name), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, fmt(r.CW.totalFU, 1)), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, fmt(r.CW.designFlow, 3)), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, r.CW.pipeSizing?.dn || "\u2014"), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(StatusBadge, { status: r.CW.pipeSizing?.status })), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, fmt(r.HW.totalFU, 1)), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, fmt(r.HW.designFlow, 3)), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, r.HW.pipeSizing?.dn || "\u2014"), /* @__PURE__ */ React.createElement("td", { style: { padding: "4px 6px" } }, /* @__PURE__ */ React.createElement(StatusBadge, { status: r.HW.pipeSizing?.status })));
+    })))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 20, fontSize: 11, color: COLORS.steel, lineHeight: 1.6 } }, "Prototype G1\u2013G4: Reference Data (from V08 DEFAULT_DB) + Calculation Engine + Project/SystemGroup/Level/FixtureInstance + basic UI + Excel Export. Excel Export layout: Sheet 1 = Settings (Design Basis + FU Database table for assigned fixtures) \u2192 one sheet per Level (Current-Floor-Only results) \u2192 last sheet = cumulative Summary across all Levels. Read directly from the Calculation Result (no formulas re-run in the Export Layer). Importing a new Reference Data Pack (G5) is not in this test build."))));
+  }
+  function Field({ label, children }) {
+    return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10.5, color: COLORS.steel, marginBottom: 3, fontWeight: 600 } }, label), children);
+  }
+  return __toCommonJS(app_build_exports);
+})();
+</script>
+<script>
+  (function () {
+    var rootEl = document.getElementById("root");
+    if (typeof React === "undefined" || typeof ReactDOM === "undefined") {
+      rootEl.innerHTML = '<div style="font-family: ui-sans-serif, system-ui, sans-serif; padding: 40px; color: #B0332B;">' +
+        'Could not load React from CDN. Please check your internet connection and reload this file.</div>';
+      return;
+    }
+    if (typeof XLSX === "undefined") {
+      console.warn("[PipeDesignAssistant] XLSX (SheetJS) failed to load from CDN — Excel Export will not work until this file has internet access to cdnjs.cloudflare.com.");
+    }
+    var App = PDPA_APP.default;
+    var root = ReactDOM.createRoot(rootEl);
+    root.render(React.createElement(App));
+  })();
+</script>
+</body>
+</html>
