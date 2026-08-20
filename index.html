@@ -1426,13 +1426,20 @@ var PDPA_WRAPPER = (() => {
     if (status === "expired") {
       return React.createElement(ExpiredTrialScreen, { supabaseClient, userEmail: session.user.email, expiresAt: trialInfo.expiresAt });
     }
+    const daysLeft = Math.ceil((trialInfo.expiresAt.getTime() - Date.now()) / (24 * 60 * 60 * 1e3));
+    const isNearExpiry = daysLeft <= 3;
     return React.createElement(
       "div",
       null,
       React.createElement(
         "div",
-        { style: { background: WCOLORS.ink, color: "#fff", padding: "6px 16px", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, fontSize: 11.5 } },
+        { style: { background: isNearExpiry ? "#7A3B1E" : WCOLORS.ink, color: "#fff", padding: "6px 16px", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, fontSize: 11.5 } },
         React.createElement("span", { style: { opacity: 0.75 } }, session.user.email),
+        React.createElement(
+          "span",
+          { style: { opacity: isNearExpiry ? 1 : 0.6, fontWeight: isNearExpiry ? 700 : 400, borderLeft: "1px solid rgba(255,255,255,0.25)", paddingLeft: 10 } },
+          isNearExpiry ? `\u26A0 Trial expires in ${daysLeft <= 0 ? "less than a day" : daysLeft + " day(s)"} \u2014 ${trialInfo.expiresAt.toLocaleDateString()}` : `Trial expires: ${trialInfo.expiresAt.toLocaleDateString()} (${daysLeft} day${daysLeft === 1 ? "" : "s"} left)`
+        ),
         React.createElement(
           "span",
           { onClick: () => supabaseClient.auth.signOut(), style: { cursor: "pointer", textDecoration: "underline", opacity: 0.9 } },
