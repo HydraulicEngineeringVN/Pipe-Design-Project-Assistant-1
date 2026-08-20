@@ -1255,17 +1255,35 @@ var PDPA_WRAPPER = (() => {
   };
   async function checkUserTrial(supabaseClient, user) {
     let row = null;
+    let debugInfo = { byIdError: null, byEmailError: null, byIdFound: false, byEmailFound: false };
     try {
       const byId = await supabaseClient.from("profile").select("*").eq("ID", user.id).maybeSingle();
-      if (byId.data) row = byId.data;
+      if (byId.error) debugInfo.byIdError = byId.error.message || String(byId.error);
+      if (byId.data) {
+        row = byId.data;
+        debugInfo.byIdFound = true;
+      }
     } catch (e) {
+      debugInfo.byIdError = e.message || String(e);
     }
     if (!row) {
       try {
         const byEmail = await supabaseClient.from("profile").select("*").eq("email", user.email).maybeSingle();
-        if (byEmail.data) row = byEmail.data;
+        if (byEmail.error) debugInfo.byEmailError = byEmail.error.message || String(byEmail.error);
+        if (byEmail.data) {
+          row = byEmail.data;
+          debugInfo.byEmailFound = true;
+        }
       } catch (e) {
+        debugInfo.byEmailError = e.message || String(e);
       }
+    }
+    if (!row) {
+      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng override trong b\u1EA3ng `profile` cho user:", user.email, user.id, debugInfo);
+    } else if (!row["trial expires at"]) {
+      console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `profile` nh\u01B0ng c\u1ED9t "trial expires at" tr\u1ED1ng:', row);
+    } else {
+      console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `profile`:", row["trial expires at"]);
     }
     let expiresAt;
     if (row && row["trial expires at"]) {
@@ -1274,7 +1292,7 @@ var PDPA_WRAPPER = (() => {
       const created = new Date(user.created_at);
       expiresAt = new Date(created.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1e3);
     }
-    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: !!row };
+    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: !!row, debugInfo };
   }
   function AuthForm({ supabaseClient }) {
     const [mode, setMode] = useState("signin");
