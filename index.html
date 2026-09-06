@@ -1243,6 +1243,10 @@ var PDPA_WRAPPER = (() => {
   var { useState, useEffect } = React;
   var TRIAL_DAYS = 14;
   var ADMIN_CONTACT_EMAIL = "thuynguyen@indoeng.com";
+  // APP_NAME: bảng "Profile" giờ dùng CHUNG với Pipe Design Assistant sau khi gộp project Supabase (tiết
+  // kiệm suất free) — lọc đúng dòng của app này qua cột "app". Bảng/cột thật của project được giữ lại
+  // (wmzooetuftsfdqonktzg) có tên viết hoa: "Profile", "ID", "Email", "Trial expires at".
+  var APP_NAME = "pipe_design_project_assistant";
   var WCOLORS = {
     ink: "#1C2B33",
     steel: "#425563",
@@ -1257,7 +1261,7 @@ var PDPA_WRAPPER = (() => {
     let row = null;
     let debugInfo = { byIdError: null, byEmailError: null, byIdFound: false, byEmailFound: false };
     try {
-      const byId = await supabaseClient.from("profile").select("*").eq("ID", user.id).maybeSingle();
+      const byId = await supabaseClient.from("Profile").select("*").eq("ID", user.id).eq("app", APP_NAME).maybeSingle();
       if (byId.error) debugInfo.byIdError = byId.error.message || String(byId.error);
       if (byId.data) {
         row = byId.data;
@@ -1268,7 +1272,7 @@ var PDPA_WRAPPER = (() => {
     }
     if (!row) {
       try {
-        const byEmail = await supabaseClient.from("profile").select("*").eq("email", user.email).maybeSingle();
+        const byEmail = await supabaseClient.from("Profile").select("*").eq("Email", user.email).eq("app", APP_NAME).maybeSingle();
         if (byEmail.error) debugInfo.byEmailError = byEmail.error.message || String(byEmail.error);
         if (byEmail.data) {
           row = byEmail.data;
@@ -1279,15 +1283,15 @@ var PDPA_WRAPPER = (() => {
       }
     }
     if (!row) {
-      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng override trong b\u1EA3ng `profile` cho user:", user.email, user.id, debugInfo);
-    } else if (!row["trial expires at"]) {
-      console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `profile` nh\u01B0ng c\u1ED9t "trial expires at" tr\u1ED1ng:', row);
+      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng override trong b\u1EA3ng `Profile` cho user:", user.email, user.id, debugInfo);
+    } else if (!row["Trial expires at"]) {
+      console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `Profile` nh\u01B0ng c\u1ED9t "Trial expires at" tr\u1ED1ng:', row);
     } else {
-      console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `profile`:", row["trial expires at"]);
+      console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `Profile`:", row["Trial expires at"]);
     }
     let expiresAt;
-    if (row && row["trial expires at"]) {
-      expiresAt = new Date(row["trial expires at"]);
+    if (row && row["Trial expires at"]) {
+      expiresAt = new Date(row["Trial expires at"]);
     } else {
       const created = new Date(user.created_at);
       expiresAt = new Date(created.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1e3);
@@ -1488,8 +1492,8 @@ var PDPA_WRAPPER = (() => {
       console.warn("[PipeDesignAssistant] XLSX (SheetJS) failed to load — Excel Export will not work until this file has internet access.");
     }
 
-    var SUPABASE_URL = "https://bfkgufgbqxufaferbdxj.supabase.co";
-    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJma2d1ZmdicXh1ZmFmZXJiZHhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NzcxMzksImV4cCI6MjEwMjQ1MzEzOX0.nY4RLOW-vklJOh89O7zBYtrf9_f9xodYu-rzFn-fvc0";
+    var SUPABASE_URL = "https://wmzooetuftsfdqonktzg.supabase.co";
+    var SUPABASE_ANON_KEY = "sb_publishable_k2pLpEZI2P-6zjsmNp0idA_jKroImfk";
     var supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     var RootGate = PDPA_WRAPPER.default;
