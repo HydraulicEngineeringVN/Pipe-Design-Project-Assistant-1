@@ -1257,30 +1257,40 @@ var PDPA_WRAPPER = (() => {
     failBg: "#FBE9E8",
     pass: "#2E7D4F"
   };
-  async function checkUserTrial(supabaseClient, user) {
-    let row = null;
-    let debugInfo = { byIdError: null, byEmailError: null, byIdFound: false, byEmailFound: false };
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  // Tra 1 lần: theo ID trước, rồi theo Email — trả về dòng tìm được (hoặc null) + debugInfo.
+  async function lookupProfileRow(supabaseClient, user, debugInfo) {
     try {
       const byId = await supabaseClient.from("Profile").select("*").eq("ID", user.id).eq("app", APP_NAME).maybeSingle();
       if (byId.error) debugInfo.byIdError = byId.error.message || String(byId.error);
       if (byId.data) {
-        row = byId.data;
         debugInfo.byIdFound = true;
+        return byId.data;
       }
     } catch (e) {
       debugInfo.byIdError = e.message || String(e);
     }
-    if (!row) {
-      try {
-        const byEmail = await supabaseClient.from("Profile").select("*").eq("Email", user.email).eq("app", APP_NAME).maybeSingle();
-        if (byEmail.error) debugInfo.byEmailError = byEmail.error.message || String(byEmail.error);
-        if (byEmail.data) {
-          row = byEmail.data;
-          debugInfo.byEmailFound = true;
-        }
-      } catch (e) {
-        debugInfo.byEmailError = e.message || String(e);
+    try {
+      const byEmail = await supabaseClient.from("Profile").select("*").eq("Email", user.email).eq("app", APP_NAME).maybeSingle();
+      if (byEmail.error) debugInfo.byEmailError = byEmail.error.message || String(byEmail.error);
+      if (byEmail.data) {
+        debugInfo.byEmailFound = true;
+        return byEmail.data;
       }
+    } catch (e) {
+      debugInfo.byEmailError = e.message || String(e);
+    }
+    return null;
+  }
+  async function checkUserTrial(supabaseClient, user) {
+    let debugInfo = { byIdError: null, byEmailError: null, byIdFound: false, byEmailFound: false };
+    let row = await lookupProfileRow(supabaseClient, user, debugInfo);
+    if (!row) {
+      // Không thấy ngay lần đầu -> có thể do RACE CONDITION: dòng Profile vừa được tạo (lúc Sign Up) chưa
+      // kịp lưu xong khi checkUserTrial chạy gần như đồng thời. Đợi ~900ms rồi thử lại ĐÚNG 1 lần trước khi
+      // kết luận thật sự "chưa đăng ký" — không đợi/thử lại thêm nữa để tránh treo giao diện quá lâu.
+      await sleep(900);
+      row = await lookupProfileRow(supabaseClient, user, debugInfo);
     }
     if (!row) {
       // KHÔNG có dòng Profile nào gắn đúng app này -> tài khoản này chưa từng đăng ký qua ĐÚNG app này
@@ -1328,7 +1338,14 @@ var PDPA_WRAPPER = (() => {
           // của app này (không phải người chỉ đăng ký qua app kia rồi lỡ đăng nhập được vào đây do dùng
           // chung Auth). Không set "Trial expires at" -> checkUserTrial tự áp mặc định TRIAL_DAYS ngày.
           if (data.user) {
-            await supabaseClient.from("Profile").insert([{ ID: data.user.id, Email: email, app: APP_NAME }]);
+            const insertResult = await supabaseClient.from("Profile").insert([{ ID: data.user.id, Email: email, app: APP_NAME }]);
+            if (insertResult.error) {
+              // Ghi log rõ lý do thất bại thật sự (VD sai tên cột, ràng buộc NOT NULL còn sót, RLS...) —
+              // trước đây lỗi này bị bỏ qua âm thầm, khiến không biết vì sao dòng Profile không được tạo.
+              console.error("[PipeDesignAssistant] T\u1EA1o d\xF2ng Profile l\xFAc \u0111\u0103ng k\xFD TH\u1EA4T B\u1EA0I:", insertResult.error);
+            } else {
+              console.info("[PipeDesignAssistant] \u0110\xE3 t\u1EA1o d\xF2ng Profile l\xFAc \u0111\u0103ng k\xFD th\xE0nh c\xF4ng cho:", email);
+            }
           }
           if (!data.session) {
             setInfo("Account created \u2014 please check your email to confirm before signing in.");
