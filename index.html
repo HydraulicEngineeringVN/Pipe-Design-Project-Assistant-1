@@ -1283,20 +1283,27 @@ var PDPA_WRAPPER = (() => {
       }
     }
     if (!row) {
-      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng override trong b\u1EA3ng `Profile` cho user:", user.email, user.id, debugInfo);
-    } else if (!row["Trial expires at"]) {
+      // KHÔNG có dòng Profile nào gắn đúng app này -> tài khoản này chưa từng đăng ký qua ĐÚNG app này
+      // (có thể họ chỉ đăng ký qua app kia rồi lỡ đăng nhập được vào đây do dùng chung Supabase Auth).
+      // KHÔNG cấp mặc định 14 ngày trong trường hợp này nữa -> từ chối truy cập.
+      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng Profile n\xE0o g\u1EAFn \u0111\xFAng app n\xE0y cho user:", user.email, user.id, debugInfo);
+      return { expiresAt: null, isExpired: true, hasOverrideRow: false, notRegisteredForApp: true, debugInfo };
+    }
+    if (!row["Trial expires at"]) {
       console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `Profile` nh\u01B0ng c\u1ED9t "Trial expires at" tr\u1ED1ng:', row);
     } else {
       console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `Profile`:", row["Trial expires at"]);
     }
     let expiresAt;
-    if (row && row["Trial expires at"]) {
+    if (row["Trial expires at"]) {
       expiresAt = new Date(row["Trial expires at"]);
     } else {
+      // Có dòng Profile đúng app này nhưng chưa set ngày cụ thể -> đây là người dùng THẬT vừa đăng ký qua
+      // app này (dòng được tự tạo lúc Sign Up) -> áp mặc định TRIAL_DAYS ngày tính từ lúc tạo tài khoản.
       const created = new Date(user.created_at);
       expiresAt = new Date(created.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1e3);
     }
-    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: !!row, debugInfo };
+    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: true, notRegisteredForApp: false, debugInfo };
   }
   function AuthForm({ supabaseClient }) {
     const [mode, setMode] = useState("signin");
@@ -1317,6 +1324,12 @@ var PDPA_WRAPPER = (() => {
         } else {
           const { data, error: error2 } = await supabaseClient.auth.signUp({ email, password });
           if (error2) throw error2;
+          // Tạo ngay dòng Profile gắn đúng app này — để checkUserTrial nhận diện đây là người dùng THẬT
+          // của app này (không phải người chỉ đăng ký qua app kia rồi lỡ đăng nhập được vào đây do dùng
+          // chung Auth). Không set "Trial expires at" -> checkUserTrial tự áp mặc định TRIAL_DAYS ngày.
+          if (data.user) {
+            await supabaseClient.from("Profile").insert([{ ID: data.user.id, Email: email, app: APP_NAME }]);
+          }
           if (!data.session) {
             setInfo("Account created \u2014 please check your email to confirm before signing in.");
           }
@@ -1395,6 +1408,24 @@ var PDPA_WRAPPER = (() => {
       )
     );
   }
+  function NotRegisteredScreen({ supabaseClient, userEmail }) {
+    return React.createElement(
+      "div",
+      { style: { minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: WCOLORS.paper, fontFamily: "ui-sans-serif, system-ui, sans-serif" } },
+      React.createElement(
+        "div",
+        { style: { background: WCOLORS.panel, border: `1px solid ${WCOLORS.line}`, borderRadius: 10, padding: 28, width: 380, textAlign: "center", boxShadow: "0 10px 40px rgba(0,0,0,0.08)" } },
+        React.createElement("div", { style: { fontSize: 15, fontWeight: 700, color: WCOLORS.fail, marginBottom: 8 } }, "Not registered for this app"),
+        React.createElement("div", { style: { fontSize: 12.5, color: WCOLORS.steel, marginBottom: 4 } }, `Account: ${userEmail}`),
+        React.createElement("div", { style: { fontSize: 12.5, color: WCOLORS.ink, marginBottom: 20 } }, `This account hasn't signed up for Pipe Design Project Assistant yet. Please create an account here, or contact ${ADMIN_CONTACT_EMAIL}.`),
+        React.createElement(
+          "button",
+          { onClick: () => supabaseClient.auth.signOut(), style: { background: "#fff", color: WCOLORS.ink, border: `1px solid ${WCOLORS.line}`, borderRadius: 6, padding: "8px 16px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" } },
+          "Sign out"
+        )
+      )
+    );
+  }
   function RootGate({ supabaseClient, AppComponent }) {
     const [status, setStatus] = useState("loading");
     const [session, setSession] = useState(null);
@@ -1429,7 +1460,7 @@ var PDPA_WRAPPER = (() => {
       checkUserTrial(supabaseClient, session.user).then((info) => {
         if (!mounted) return;
         setTrialInfo(info);
-        setStatus(info.isExpired ? "expired" : "active");
+        setStatus(info.notRegisteredForApp ? "notRegistered" : info.isExpired ? "expired" : "active");
       });
       return () => {
         mounted = false;
@@ -1444,6 +1475,9 @@ var PDPA_WRAPPER = (() => {
     }
     if (status === "signedOut") {
       return React.createElement(AuthForm, { supabaseClient });
+    }
+    if (status === "notRegistered") {
+      return React.createElement(NotRegisteredScreen, { supabaseClient, userEmail: session.user.email });
     }
     if (status === "expired") {
       return React.createElement(ExpiredTrialScreen, { supabaseClient, userEmail: session.user.email, expiresAt: trialInfo.expiresAt });
