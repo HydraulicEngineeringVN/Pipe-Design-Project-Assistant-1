@@ -1567,14 +1567,38 @@ var PDPA_WRAPPER = (() => {
     const [status, setStatus] = useState("loading");
     const [session, setSession] = useState(null);
     const [trialInfo, setTrialInfo] = useState(null);
+    const [errorMsg, setErrorMsg] = useState("");
+    // BUG FIX (2026-09-23): both promise chains below used to have no .catch() and no timeout, so
+    // if getSession()/checkUserTrial() ever rejected OR simply hung (flaky network, a browser
+    // extension blocking the request, a Supabase outage, an expired/invalid anon key, etc.), the
+    // status never left "loading"/"checkingTrial" and the page was stuck on "Loading..." forever
+    // with no way out except a manual page reload the user had no reason to try. Fix: (1) always
+    // .catch() the promise so a REJECTION surfaces an actionable error screen instead of hanging,
+    // and (2) a watchdog timeout so a HANG (promise that never settles) also surfaces the same
+    // error screen after 15s. This never bypasses the trial gate on error \u2014 it only ever routes to
+    // "error" (with a Retry button that reloads the page), never silently to "active".
     useEffect(() => {
       let mounted = true;
+      let settled = false;
+      const timeoutId = setTimeout(() => {
+        if (!mounted || settled) return;
+        setErrorMsg("Kh\xF4ng th\u1ec3 k\u1ebft n\u1ed1i t\u1edbi m\xE1y ch\u1ee7 x\xE1c th\u1ef1c (qu\xE1 th\u1eddi gian ch\u1edd). Vui l\xF2ng ki\u1ec3m tra k\u1ebft n\u1ed1i m\u1ea1ng v\xE0 th\u1eed l\u1ea1i.");
+        setStatus("error");
+      }, 15000);
       supabaseClient.auth.getSession().then(({ data }) => {
+        settled = true;
+        clearTimeout(timeoutId);
         if (!mounted) return;
         if (data.session) {
           setSession(data.session);
           setStatus("checkingTrial");
         } else setStatus("signedOut");
+      }).catch((err) => {
+        settled = true;
+        clearTimeout(timeoutId);
+        if (!mounted) return;
+        setErrorMsg("Kh\xF4ng th\u1ec3 k\u1ebft n\u1ed1i t\u1edbi m\xE1y ch\u1ee7 x\xE1c th\u1ef1c: " + (err && err.message ? err.message : String(err)));
+        setStatus("error");
       });
       const { data: sub } = supabaseClient.auth.onAuthStateChange((_event, newSession) => {
         if (newSession) {
@@ -1588,19 +1612,35 @@ var PDPA_WRAPPER = (() => {
       });
       return () => {
         mounted = false;
+        clearTimeout(timeoutId);
         sub.subscription.unsubscribe();
       };
     }, [supabaseClient]);
     useEffect(() => {
       if (status !== "checkingTrial" || !session) return;
       let mounted = true;
+      let settled = false;
+      const timeoutId = setTimeout(() => {
+        if (!mounted || settled) return;
+        setErrorMsg("Kh\xF4ng th\u1ec3 ki\u1ec3m tra th\xF4ng tin d\xF9ng th\u1eed (qu\xE1 th\u1eddi gian ch\u1edd). Vui l\xF2ng ki\u1ec3m tra k\u1ebft n\u1ed1i m\u1ea1ng v\xE0 th\u1eed l\u1ea1i.");
+        setStatus("error");
+      }, 15000);
       checkUserTrial(supabaseClient, session.user).then((info) => {
+        settled = true;
+        clearTimeout(timeoutId);
         if (!mounted) return;
         setTrialInfo(info);
         setStatus(info.isExpired ? "expired" : "active");
+      }).catch((err) => {
+        settled = true;
+        clearTimeout(timeoutId);
+        if (!mounted) return;
+        setErrorMsg("Kh\xF4ng th\u1ec3 ki\u1ec3m tra th\xF4ng tin d\xF9ng th\u1eed: " + (err && err.message ? err.message : String(err)));
+        setStatus("error");
       });
       return () => {
         mounted = false;
+        clearTimeout(timeoutId);
       };
     }, [status, session, supabaseClient]);
     if (status === "loading" || status === "checkingTrial") {
@@ -1608,6 +1648,26 @@ var PDPA_WRAPPER = (() => {
         "div",
         { style: { minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: WCOLORS.paper, fontFamily: "ui-sans-serif, system-ui, sans-serif", color: WCOLORS.steel, fontSize: 13 } },
         "Loading\u2026"
+      );
+    }
+    if (status === "error") {
+      return React.createElement(
+        "div",
+        { style: { minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: WCOLORS.paper, fontFamily: "ui-sans-serif, system-ui, sans-serif" } },
+        React.createElement(
+          "div",
+          { style: { background: WCOLORS.panel, border: `1px solid ${WCOLORS.line}`, borderRadius: 10, padding: 28, width: 380, boxShadow: "0 10px 40px rgba(0,0,0,0.08)", textAlign: "center" } },
+          React.createElement("div", { style: { fontSize: 10, letterSpacing: 1.5, opacity: 0.55, fontWeight: 700, color: WCOLORS.ink, marginBottom: 10 } }, "PIPE DESIGN PROJECT ASSISTANT"),
+          React.createElement("div", { style: { fontSize: 13, color: WCOLORS.fail, marginBottom: 18, lineHeight: 1.5 } }, errorMsg || "\u0110\xE3 x\u1ea3y ra l\u1ed7i kh\xF4ng x\xE1c \u0111\u1ecbnh."),
+          React.createElement(
+            "button",
+            {
+              onClick: () => window.location.reload(),
+              style: { background: WCOLORS.ink, color: "#fff", border: "none", borderRadius: 6, padding: "10px 20px", fontSize: 13, fontWeight: 700, cursor: "pointer" },
+            },
+            "Th\u1eed l\u1ea1i (Reload)"
+          )
+        )
       );
     }
     if (status === "signedOut") {
