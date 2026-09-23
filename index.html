@@ -1415,6 +1415,10 @@ var PDPA_WRAPPER = (() => {
   var { useState, useEffect } = React;
   var TRIAL_DAYS = 14;
   var ADMIN_CONTACT_EMAIL = "thuynguyen@indoeng.com";
+  // B\u1EA3ng "Profile" gi\u1EDD d\u00F9ng CHUNG v\u1EDBi Pipe Design Assistant (V08/V09) trong 1 Supabase project \u2014 m\u1ED7i app
+  // t\u1EF1 l\u1ECDc \u0111\u00FAng d\u00F2ng c\u1EE7a m\u00ECnh qua c\u1ED9t "app". T\u00EAn app c\u1EE7a NEXT GEN trong c\u1ED9t n\u00E0y (kh\u1EDBp v\u1EDBi d\u1EEF li\u1EC7u \u0111\u00E3 \u0111\u01B0\u1EE3c
+  // migrate th\u1EE7 c\u00F4ng sang project chung): "pipe_design_project_assistant".
+  var APP_NAME = "pipe_design_project_assistant";
   var WCOLORS = {
     ink: "#1C2B33",
     steel: "#425563",
@@ -1425,11 +1429,17 @@ var PDPA_WRAPPER = (() => {
     failBg: "#FBE9E8",
     pass: "#2E7D4F"
   };
-  async function checkUserTrial(supabaseClient, user) {
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  // Tra 1 l\u1EA7n d\u00F2ng "Profile" \u0111\u00FAng app n\u00E0y (theo ID r\u1ED3i theo Email) \u2014 tr\u1EA3 v\u1EC1 {row, debugInfo}.
+  // L\u01AFU \u00DD schema th\u1EADt c\u1EE7a project chung (kh\u00E1c project c\u0169 \u0111\u00E3 b\u1ECB xo\u00E1 sau khi migrate): t\u00EAn b\u1EA3ng "Profile"
+  // (ch\u1EEF P hoa), c\u1ED9t "ID" (uuid), "Email" (text), "Trial expires at" (date) \u2014 t\u1EA5t c\u1EA3 case-sensitive/quoted.
+  async function lookupProfileRow(supabaseClient, user) {
     let row = null;
     let debugInfo = { byIdError: null, byEmailError: null, byIdFound: false, byEmailFound: false };
     try {
-      const byId = await supabaseClient.from("profile").select("*").eq("ID", user.id).maybeSingle();
+      const byId = await supabaseClient.from("Profile").select('"ID","Email","Trial expires at"').eq("ID", user.id).eq("app", APP_NAME).maybeSingle();
       if (byId.error) debugInfo.byIdError = byId.error.message || String(byId.error);
       if (byId.data) {
         row = byId.data;
@@ -1440,7 +1450,7 @@ var PDPA_WRAPPER = (() => {
     }
     if (!row) {
       try {
-        const byEmail = await supabaseClient.from("profile").select("*").eq("email", user.email).maybeSingle();
+        const byEmail = await supabaseClient.from("Profile").select('"ID","Email","Trial expires at"').eq("Email", user.email).eq("app", APP_NAME).maybeSingle();
         if (byEmail.error) debugInfo.byEmailError = byEmail.error.message || String(byEmail.error);
         if (byEmail.data) {
           row = byEmail.data;
@@ -1450,21 +1460,34 @@ var PDPA_WRAPPER = (() => {
         debugInfo.byEmailError = e.message || String(e);
       }
     }
+    return { row, debugInfo };
+  }
+  async function checkUserTrial(supabaseClient, user) {
+    let { row, debugInfo } = await lookupProfileRow(supabaseClient, user);
     if (!row) {
-      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng override trong b\u1EA3ng `profile` cho user:", user.email, user.id, debugInfo);
-    } else if (!row["trial expires at"]) {
-      console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `profile` nh\u01B0ng c\u1ED9t "trial expires at" tr\u1ED1ng:', row);
+      // Kh\u00F4ng th\u1EA5y ngay l\u1EA7n \u0111\u1EA7u -> c\u00F3 th\u1EC3 do RACE CONDITION: d\u00F2ng "Profile" v\u1EEBa \u0111\u01B0\u1EE3c t\u1EA1o l\u00FAc Sign Up
+      // (xem AuthForm b\u00EAn d\u01B0\u1EDBi) ch\u01B0a k\u1ECBp l\u01B0u xong khi checkUserTrial ch\u1EA1y g\u1EA7n nh\u01B0 \u0111\u1ED3ng th\u1EDDi. \u0110\u1EE3i ~900ms
+      // r\u1ED3i th\u1EED l\u1EA1i \u0110\u00DANG 1 l\u1EA7n tr\u01B0\u1EDBc khi k\u1EBFt lu\u1EADn th\u1EADt s\u1EF1 "ch\u01B0a \u0111\u0103ng k\u00FD cho app n\u00E0y".
+      await sleep(900);
+      ({ row, debugInfo } = await lookupProfileRow(supabaseClient, user));
+    }
+    if (!row) {
+      console.warn("[PipeDesignAssistant] Kh\xF4ng t\xECm th\u1EA5y d\xF2ng \u0111\xFAng app='" + APP_NAME + "' trong b\u1EA3ng `Profile` cho user:", user.email, user.id, debugInfo);
+      return { expiresAt: null, isExpired: false, hasOverrideRow: false, isNotRegistered: true, debugInfo };
+    }
+    if (!row["Trial expires at"]) {
+      console.warn('[PipeDesignAssistant] T\xECm th\u1EA5y d\xF2ng trong `Profile` nh\u01B0ng c\u1ED9t "Trial expires at" tr\u1ED1ng \u2014 d\xF9ng m\u1EB7c \u0111\u1ECBnh ' + TRIAL_DAYS + ' ng\xE0y t\xEDnh t\u1EEB l\xFAc t\u1EA1o t\xE0i kho\u1EA3n:', row);
     } else {
-      console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `profile`:", row["trial expires at"]);
+      console.info("[PipeDesignAssistant] D\xF9ng ng\xE0y override t\u1EEB `Profile`:", row["Trial expires at"]);
     }
     let expiresAt;
-    if (row && row["trial expires at"]) {
-      expiresAt = new Date(row["trial expires at"]);
+    if (row["Trial expires at"]) {
+      expiresAt = new Date(row["Trial expires at"]);
     } else {
       const created = new Date(user.created_at);
       expiresAt = new Date(created.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1e3);
     }
-    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: !!row, debugInfo };
+    return { expiresAt, isExpired: /* @__PURE__ */ new Date() > expiresAt, hasOverrideRow: true, isNotRegistered: false, debugInfo };
   }
   function AuthForm({ supabaseClient }) {
     const [mode, setMode] = useState("signin");
@@ -1485,6 +1508,13 @@ var PDPA_WRAPPER = (() => {
         } else {
           const { data, error: error2 } = await supabaseClient.auth.signUp({ email, password });
           if (error2) throw error2;
+          // B\u1ea3ng "Profile" d\u00f9ng chung v\u1edbi app kia, ph\u00e2n bi\u1ec7t b\u1eb1ng c\u1ed9t "app" -> ph\u1ea3i t\u1ef1 t\u1ea1o d\u00f2ng g\u1eafn tag
+          // app=APP_NAME cho user m\u1edbi, n\u1ebfu kh\u00f4ng checkUserTrial() (k\u1ec3 c\u1ea3 sau khi retry) s\u1ebd lu\u00f4n k\u1ebft lu\u1eadn
+          // "ch\u01b0a \u0111\u0103ng k\u00fd cho app n\u00e0y" v\u00e0 kho\u00e1 t\u00e0i kho\u1ea3n ra kh\u1ecfi NEXT GEN v\u0129nh vi\u1ec5n.
+          if (data.user) {
+            const { error: insertErr } = await supabaseClient.from("Profile").insert([{ ID: data.user.id, Email: email, app: APP_NAME }]);
+            if (insertErr) console.error("[PipeDesignAssistant] T\u1ea1o d\xF2ng Profile (app=" + APP_NAME + ") cho user m\u1edbi th\u1ea5t b\u1ea1i:", insertErr);
+          }
           if (!data.session) {
             setInfo("Account created \u2014 please check your email to confirm before signing in.");
           }
@@ -1563,6 +1593,28 @@ var PDPA_WRAPPER = (() => {
       )
     );
   }
+  // Tài khoản này CÓ đăng nhập thành công (Supabase Auth chung cho cả 2 app) nhưng KHÔNG có dòng
+  // "Profile" nào gắn app=APP_NAME -> nghĩa là tài khoản chỉ từng đăng ký bên app kia (Pipe Design
+  // Assistant), chưa từng đăng ký cho NEXT GEN -> từ chối rõ ràng thay vì âm thầm cấp 14 ngày dùng thử.
+  function NotRegisteredScreen({ supabaseClient, userEmail }) {
+    return React.createElement(
+      "div",
+      { style: { minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: WCOLORS.paper, fontFamily: "ui-sans-serif, system-ui, sans-serif" } },
+      React.createElement(
+        "div",
+        { style: { background: WCOLORS.panel, border: `1px solid ${WCOLORS.line}`, borderRadius: 10, padding: 28, width: 380, textAlign: "center", boxShadow: "0 10px 40px rgba(0,0,0,0.08)" } },
+        React.createElement("div", { style: { fontSize: 15, fontWeight: 700, color: WCOLORS.fail, marginBottom: 8 } }, "Not registered for this app"),
+        React.createElement("div", { style: { fontSize: 12.5, color: WCOLORS.steel, marginBottom: 4 } }, `Account: ${userEmail}`),
+        React.createElement("div", { style: { fontSize: 12.5, color: WCOLORS.steel, marginBottom: 16 } }, "This account has not signed up for Pipe Design Project Assistant."),
+        React.createElement("div", { style: { fontSize: 12.5, color: WCOLORS.ink, marginBottom: 20 } }, `Please create a new account above, or contact ${ADMIN_CONTACT_EMAIL} for help.`),
+        React.createElement(
+          "button",
+          { onClick: () => supabaseClient.auth.signOut(), style: { background: "#fff", color: WCOLORS.ink, border: `1px solid ${WCOLORS.line}`, borderRadius: 6, padding: "8px 16px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" } },
+          "Sign out"
+        )
+      )
+    );
+  }
   function RootGate({ supabaseClient, AppComponent }) {
     const [status, setStatus] = useState("loading");
     const [session, setSession] = useState(null);
@@ -1630,7 +1682,7 @@ var PDPA_WRAPPER = (() => {
         clearTimeout(timeoutId);
         if (!mounted) return;
         setTrialInfo(info);
-        setStatus(info.isExpired ? "expired" : "active");
+        setStatus(info.isNotRegistered ? "notRegistered" : info.isExpired ? "expired" : "active");
       }).catch((err) => {
         settled = true;
         clearTimeout(timeoutId);
@@ -1672,6 +1724,9 @@ var PDPA_WRAPPER = (() => {
     }
     if (status === "signedOut") {
       return React.createElement(AuthForm, { supabaseClient });
+    }
+    if (status === "notRegistered") {
+      return React.createElement(NotRegisteredScreen, { supabaseClient, userEmail: session.user.email });
     }
     if (status === "expired") {
       return React.createElement(ExpiredTrialScreen, { supabaseClient, userEmail: session.user.email, expiresAt: trialInfo.expiresAt });
@@ -1720,8 +1775,11 @@ var PDPA_WRAPPER = (() => {
       console.warn("[PipeDesignAssistant] XLSX (SheetJS) failed to load — Excel Export will not work until this file has internet access.");
     }
 
-    var SUPABASE_URL = "https://bfkgufgbqxufaferbdxj.supabase.co";
-    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJma2d1ZmdicXh1ZmFmZXJiZHhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NzcxMzksImV4cCI6MjEwMjQ1MzEzOX0.nY4RLOW-vklJOh89O7zBYtrf9_f9xodYu-rzFn-fvc0";
+    // Project Supabase đã được HỢP NHẤT với Pipe Design Assistant (V08/V09) — project cũ
+    // (bfkgufgbqxufaferbdxj) đã bị xoá sau khi migrate, đây chính là nguyên nhân gây lỗi
+    // "net::ERR_NAME_NOT_RESOLVED" / đứng ở Loading: URL cũ trỏ tới 1 project không còn tồn tại.
+    var SUPABASE_URL = "https://wmzooetuftsfdqonktzg.supabase.co";
+    var SUPABASE_ANON_KEY = "sb_publishable_k2pLpEZI2P-6zjsmNp0idA_jKroImfk";
     var supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     var RootGate = PDPA_WRAPPER.default;
